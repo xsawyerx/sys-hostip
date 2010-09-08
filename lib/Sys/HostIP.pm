@@ -197,8 +197,6 @@ sub _get_win32_interface_info {
 
 __END__
 
-# Below is stub documentation for your module. You better edit it!
-
 =head1 NAME
 
 Sys::HostIP - Try extra hard to get ip address related info
@@ -238,11 +236,22 @@ does this by parsing ifconfig(8) (ipconfig on Win32/Cygwin) output.
 
 =head2 EXPORT
 
+Nothing by default!
+
+But, if you ask for it nicely, you'll get:
+
 ip(), ips(), interfaces(), and ifconfig(). 
+
+To export something explicitly, use the syntax:
+
+    use HostIP qw/ip ips interfaces/;
+    # that will get you those three subroutines, for example
 
 =head1 AUTHOR
 
-Jonathan Schatz <bluelines@divisionbyzero.com>
+Originally written by Jonathan Schatz <bluelines@divisionbyzero.com>.
+
+Currently maintained by Sawyer X <xsawyerx@cpan.org>.
 
 =head1 TODO
 
@@ -250,10 +259,11 @@ I haven't tested the win32 code with dialup or wireless connections.
 
 =head1 SEE ALSO
 
-ifconfig(8)
-ipconfig 
+=over 4
 
-L<perl>.
+=item * ifconfig(8)
 
-=cut
+=item * ipconfig
+
+=back
 
