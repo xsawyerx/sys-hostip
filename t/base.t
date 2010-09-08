@@ -23,8 +23,8 @@ ok( 1 == grep( /^$class_ip$/, @{$class_ips} ), 'Found IP in IPs by class' );
 SKIP: {
     skip 'Issues on Windows' => 1 if $^O =~ /(MSWin32|cygwin)/;
     ok(
-        1 == grep( /^127\.0\.0\.1$/, @{$class_ips} ),
-        'Found 127.0.0.1 once in IPs by class',
+        grep( /^127\.0\.0\.1$/, @{$class_ips} ),
+        'Found 127.0.0.1 in IPs by class',
     );
 };
 

@@ -6,6 +6,7 @@ Revision history for Perl extension Sys::HostIP.
     * Fixed RT #44845 (thanks Mikhael <miihael@sfc.ru>)
     * Rewrote tests, doubled them
     * Using clean EXPORT_OK now
+    * Allow multiple 127.0.0.1 in tests (VPS servers sometimes have multiple)
     * Moved to Dist::Zilla
     * Cleaned up the Changes (reversed the order, hell yes)
     * Cleaned up the POD a bit
