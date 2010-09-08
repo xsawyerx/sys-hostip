@@ -4,11 +4,11 @@ package Sys::HostIP;
 
 use Carp;
 use Exporter;
-use vars qw($VERSION @ISA @EXPORT);
+use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '1.3.1';
-@ISA     = qw(Exporter);
-@EXPORT  = qw( ip ips interfaces ifconfig );
+$VERSION   = '1.3.1';
+@ISA       = qw(Exporter);
+@EXPORT_OK = qw( ip ips interfaces ifconfig );
 
 {
   #cache value, except when a new value is specified
