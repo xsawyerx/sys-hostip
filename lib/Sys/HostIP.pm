@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 package Sys::HostIP;
+# ABSTRACT: Try extra hard to get ip address related info
 
 use Carp;
 use Exporter;
@@ -198,10 +199,6 @@ sub _get_win32_interface_info {
 
 __END__
 
-=head1 NAME
-
-Sys::HostIP - Try extra hard to get ip address related info
-
 =head1 SYNOPSIS
 
   use Sys::HostIP; 
@@ -248,7 +245,7 @@ To export something explicitly, use the syntax:
     use HostIP qw/ip ips interfaces/;
     # that will get you those three subroutines, for example
 
-=head1 AUTHOR
+=head1 HISTORY
 
 Originally written by Jonathan Schatz <bluelines@divisionbyzero.com>.
 
