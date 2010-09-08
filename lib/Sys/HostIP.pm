@@ -6,7 +6,7 @@ use Carp;
 use Exporter;
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION   = '1.3.1';
+$VERSION   = '1.4';
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw( ip ips interfaces ifconfig );
 
