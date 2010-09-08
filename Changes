@@ -2,7 +2,8 @@ Revision history for Perl extension Sys::HostIP.
 
 1.4 xx.09.10
     * New maintainer: Sawyer X (XSAWYERX)
-    * Fixed RT #24002 (thanks gmc@gmcx.net, MARKLE)
+    * Fixed RT #24002 (thanks gmc@gmcx.net and MARKLE)
+    * Fixed RT #44845 (thanks Mikhael <miihael@sfc.ru>)
     * Rewrote tests, doubled them
     * Using clean EXPORT_OK now
     * Moved to Dist::Zilla

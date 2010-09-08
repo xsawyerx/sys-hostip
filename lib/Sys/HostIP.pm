@@ -142,7 +142,8 @@ sub _get_unix_interface_info {
     if ( ($line =~/^\s+/) && ($interface) ) {
       $if_info{$interface} .= $line;
     }
-    elsif (($interface) = ($line =~/(^\w+(?:\d)?(?:\:\d+)?)/)) {
+    # FIXME: refactor this regex
+    elsif (($interface) = ($line =~/(^\w+(?:\d)?(?:\.\d+)?(?:\:\d+)?)/)) {
       $line =~s/\w+\d(\:)?\s+//;
       $if_info{$interface} = $line;
     }
