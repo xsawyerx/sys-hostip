@@ -58,6 +58,15 @@ sub interfaces {
   return $self->_get_interface_info( mode => 'interfaces' );
 }
 
+sub ifconfig {
+    my $self = shift;
+    if ( my $path = shift ) {
+        $self->{'ifconfig'} = $path;
+    }
+
+    return $self->{'ifconfig'};
+}
+
 sub _get_interface_info {
   my $self    = shift;
   my %params  = @_;
