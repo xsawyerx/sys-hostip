@@ -7,14 +7,14 @@ use Carp;
 use Exporter;
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION   = '1.4';
+$VERSION   = '1.5';
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw( ip ips interfaces ifconfig );
 
 {
   #cache value, except when a new value is specified
   my $ifconfig;
-  
+
   sub ifconfig {
     my ($class, $new_ifconfig) = @_;
     if (defined $new_ifconfig) {

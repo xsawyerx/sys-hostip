@@ -1,4 +1,8 @@
 Revision history for Perl extension Sys::HostIP.
+1.5     11.09.10
+    * Moved to proper object oriented interface
+    * Cleaning up all the POD
+    * Cleaning up code
 
 1.4     11.09.10
     * New maintainer: Sawyer X (XSAWYERX)
