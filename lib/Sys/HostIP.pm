@@ -35,52 +35,63 @@ $VERSION   = '1.4';
   }
 }
 
+sub new {
+  my $class = shift || croak 'Cannot create new method in a functional way';
+  my %opts  = @_;
+  my $self  = {%opts};
+
+  return bless $self, $class;
+}
+
 sub ip {
-  my ($class) = @_;
-  $class = "Sys::HostIP" unless defined $class;
-  return $class->_get_interface_info(mode => 'ip');
+  my $self = shift || 'Sys::HostIP';
+  return $self->_get_interface_info( mode => 'ip' );
 }
 
 sub ips {
-  my ($class) = @_;
-  $class = "Sys::HostIP" unless defined $class;
-  return $class->_get_interface_info(mode => 'ips');
+  my $self = shift || 'Sys::HostIP';
+  return $self->_get_interface_info( mode => 'ips' );
 }
 
 sub interfaces {
-  my ($class) = @_;
-  $class = "Sys::HostIP" unless defined $class;
-  return $class->_get_interface_info(mode => 'interfaces');
+  my $self = shift || 'Sys::HostIP';
+  return $self->_get_interface_info( mode => 'interfaces' );
 }
 
 sub _get_interface_info {
-  my ($class, %params) = @_;
+  my $self    = shift;
+  my %params  = @_;
   my $if_info = {};
+
   if ($^O =~/(MSWin32|cygwin)/) {
-    $if_info = $class->_get_win32_interface_info();
+    $if_info = $self->_get_win32_interface_info();
   } else {
-    $if_info = $class->_get_unix_interface_info();
+    $if_info = $self->_get_unix_interface_info();
   }
+
   if ($params{mode} eq 'interfaces') {
     return $if_info;
+
   } elsif ( $params{mode} eq 'ips') {
     return [values %$if_info];
+
   } elsif ( $params{mode} eq 'ip') {
     if ($^O =~/(MSWin32|cygwin)/) {
       foreach my $key (sort keys %$if_info) {
-    #should this be the default?
-    if ($key=~/Local Area Connection/) {
-      return ($if_info->{$key});
-    }
+        # should this be the default?
+        if ($key=~/Local Area Connection/) {
+          return ($if_info->{$key});
+        }
       }
     } else {
       foreach my $key (sort keys %$if_info) {
-    #we don't want the loopback
-    next if ($if_info->{$key} eq '127.0.0.1');
-    #now we return the first one that comes up
-    return ($if_info->{$key});
+        # we don't want the loopback
+        next if ($if_info->{$key} eq '127.0.0.1');
+        # now we return the first one that comes up
+        return ($if_info->{$key});
       }
-      #we get here if loopback is the only active device
+
+      # we get here if loopback is the only active device
       return "127.0.0.1";
     }
   }
@@ -171,15 +182,19 @@ sub _get_unix_interface_info {
 } 
 
 sub _get_win32_interface_info {
-  my ($class) = @_;
+  my $self = shift;
   my %if_info;
-  my ($line, $interface)= undef;
+  my ( $line, $interface ) = undef;
+
   local $/ = "\r\n";
+
   my @ipconfig = `ipconfig`;
+
   foreach my $line (@ipconfig) {
     chomp($line);
+
     if ($line =~/^Windows IP Configuration/) {
-      #ignore the header
+      # ignore the header
       next;
     } elsif ($line =~/^\s$/) {
       next;
@@ -201,29 +216,20 @@ __END__
 
 =head1 SYNOPSIS
 
-  use Sys::HostIP; 
-  
-  #class methods 
-  my $ip_address = Sys::HostIP->ip; 
+    # functional interface
+    use Sys::HostIP qw/ ips interfaces /;
 
-  # $ip_address is a scalar containing a best guess of your host machines 
-  # ip address. On unix systems, it will return loopback (127.0.0.1) if it 
-  # can't find anything else. This is also exported as a sub (to keep 
-  # compatability with older versions).
+    my $ip_addresses = ips();
+    my $interfaces   = interfaces();
 
-  my $ip_addresses = Sys::HostIP->ips; 
+    # object oriented interface
+    use Sys::HostIP;
 
-  # $ip_addresses is an array ref containing all the ip addresses of your
-  # machine 
+    my $hostip     = Sys::HostIP->new;
+    my $ips        = $hostip->ips;
+    my $interfaces = $hostip->interfaces;
 
-  my $interfaces = Sys::HostIP->interfaces;
-
-  # $interfaces is a hash ref containg all pairs of interfaces/ip addresses
-  # Sys::HostIP could find on your machine.
-
-  Sys::HostIP->ifconfig("/somewhere/that/ifconfig/lives");
-  # you can set the location of ifconfig with this class method if the code
-  # doesn't seem to know where your ifconfig lives
+    $hostip->ifconfig("/sr/local/sbin/ifconfig"); # new location
 
 =head1 DESCRIPTION
 
@@ -232,18 +238,75 @@ machine. All 3 methods work fine on every system that I've been able to test
 on. (Irix, OpenBSD, FreeBSD, NetBSD, Solaris, Linux, OSX, Win32, Cygwin). It 
 does this by parsing ifconfig(8) (ipconfig on Win32/Cygwin) output. 
 
+It has an object oriented interface and a functional one for compatibility
+with older versions.
+
+=head1 ATTRIBUTES
+
+=head2 ifconfig
+
+    my $hostip = Sys::HostIP->new( ifconfig => '/path/to/your/ifconfig' );
+
+You can set the location of ifconfig with this attributes if the code doesn't
+know where your ifconfig lives.
+
+=head1 METHODS
+
+=head2 ip
+
+    my $ip = $hostip->ip;
+
+Returns a scalar containing a best guess of your host machine's IP address. On
+unix systems, it will return loopback (127.0.0.1) if it can't find anything
+else.
+
+=head2 ips
+
+    my $all_ips = $hostip->ips;
+    foreach my $ip ( @{$all_ips} ) {
+        print "IP: $ip\n";
+    }
+
+Returns an array ref containing all the IP addresses of your machine.
+
+=head2 interfaces
+
+    my $interfaces = $hostip->interfaces;
+
+    foreach my $interface ( @{$interfaces} ) {
+        my $ip = $interfaces->{$interface};
+        print "$interface => $ip"\n";
+    }
+
+Returns a hash ref containing all pairs of interfaces and their corresponding
+IP addresses Sys::HostIP could find on your machine.
+
 =head2 EXPORT
 
 Nothing by default!
-
-But, if you ask for it nicely, you'll get:
-
-ip(), ips(), interfaces(), and ifconfig(). 
 
 To export something explicitly, use the syntax:
 
     use HostIP qw/ip ips interfaces/;
     # that will get you those three subroutines, for example
+
+All of these subroutines will match the object oriented interface methods.
+
+=over 4
+
+=item * ip
+
+    my $ip = ip();
+
+=item * ips
+
+    my $ips = ips();
+
+=item * interfaces
+
+    my $interfaces = interfaces();
+
+=back
 
 =head1 HISTORY
 
