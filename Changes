@@ -1,19 +1,23 @@
 Revision history for Perl extension Sys::HostIP.
+1.6     12.09.10
+        * ifconfig attr as documented in POD
+        * Sorting ifconfig sub to _get_ifconfig
+
 1.5     11.09.10
-    * Moved to proper object oriented interface
-    * Cleaning up all the POD
-    * Cleaning up code
+        * Moved to proper object oriented interface
+        * Cleaning up all the POD
+        * Cleaning up code
 
 1.4     11.09.10
-    * New maintainer: Sawyer X (XSAWYERX)
-    * Fixed RT #24002 (thanks gmc@gmcx.net and MARKLE)
-    * Fixed RT #44845 (thanks Mikhael <miihael@sfc.ru>)
-    * Rewrote tests, doubled them
-    * Using clean EXPORT_OK now
-    * Allow multiple 127.0.0.1 in tests (VPS servers sometimes have multiple)
-    * Moved to Dist::Zilla
-    * Cleaned up the Changes (reversed the order, hell yes)
-    * Cleaned up the POD a bit
+        * New maintainer: Sawyer X (XSAWYERX)
+        * Fixed RT #24002 (thanks gmc@gmcx.net and MARKLE)
+        * Fixed RT #44845 (thanks Mikhael <miihael@sfc.ru>)
+        * Rewrote tests, doubled them
+        * Using clean EXPORT_OK now
+        * Allow multiple 127.0.0.1 in tests (VPS servers may have multiple)
+        * Moved to Dist::Zilla
+        * Cleaned up the Changes (reversed the order, hell yes)
+        * Cleaned up the POD a bit
 
 1.3.1 Mon Sep 29 20:37:07 PST 2003
     fixed line wrapping in documentation.
