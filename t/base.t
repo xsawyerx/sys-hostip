@@ -5,7 +5,6 @@ use warnings;
 use Test::More tests => 8;
 use Sys::HostIP qw/ip ips ifconfig interfaces/;
 
-my $class  = 'Sys::HostIP';
 my $hostip = Sys::HostIP->new;
 
 # -- ip() --
