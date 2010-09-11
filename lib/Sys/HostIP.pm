@@ -11,36 +11,45 @@ $VERSION   = '1.5';
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw( ip ips interfaces ifconfig );
 
-{
-  #cache value, except when a new value is specified
-  my $ifconfig;
-
-  sub ifconfig {
-    my ($class, $new_ifconfig) = @_;
-    if (defined $new_ifconfig) {
-      $ifconfig = $new_ifconfig;
-    } elsif (defined $ifconfig) {
-      # do nothing, since we're keeping the cached value
-    } elsif ($^O =~ /(linux|openbsd|freebsd|netbsd|solaris|darwin)/) {
-      $ifconfig =  '/sbin/ifconfig -a';
-    } elsif ($^O eq 'aix') {
-      $ifconfig = '/usr/sbin/ifconfig -a';
-    } elsif  ($^O eq 'irix') {
-      $ifconfig = '/usr/etc/ifconfig';
-    } else {
-      carp "Unknown system ($^O), guessing ifconfig lives in /sbin/ifconfig (email bluelines\@divisionbyzero.com with your system info)\n";
-      $ifconfig = '/sbin/ifconfig -a';
-    }
-    return $ifconfig;
-  }
-}
-
 sub new {
   my $class = shift || croak 'Cannot create new method in a functional way';
   my %opts  = @_;
-  my $self  = {%opts};
+  my $self  = bless {%opts}, $class;
 
-  return bless $self, $class;
+  $self->{'ifconfig'} ||= $self->_get_ifconfig;
+
+  return $self;
+}
+
+sub _get_ifconfig {
+  my $self     = shift;
+  my $ifconfig = '/sbin/ifconfig -a';
+
+  if ( $^O =~ /(?:linux|openbsd|freebsd|netbsd|solaris|darwin)/ ) {
+    $ifconfig =  '/sbin/ifconfig -a';
+  } elsif ( $^O eq 'aix' ) {
+    $ifconfig = '/usr/sbin/ifconfig -a';
+  } elsif  ( $^O eq 'irix' ) {
+    $ifconfig = '/usr/etc/ifconfig';
+  } else {
+    carp "Unknown system ($^O), guessing ifconfig lives in /sbin/ifconfig " .
+         "(email xsawyerx\@cpan.org with the location of your ifconfig)\n";
+  }
+
+  return $ifconfig;
+}
+
+sub ifconfig {
+    my $self = shift;
+    my $path = shift;
+
+    if ( ref $self ) {
+        $path and $self->{'ifconfig'} = $path;
+    } else {
+        return $self->_get_ifconfig;
+    }
+
+    return $self->{'ifconfig'};
 }
 
 sub ip {
@@ -56,15 +65,6 @@ sub ips {
 sub interfaces {
   my $self = shift || 'Sys::HostIP';
   return $self->_get_interface_info( mode => 'interfaces' );
-}
-
-sub ifconfig {
-    my $self = shift;
-    if ( my $path = shift ) {
-        $self->{'ifconfig'} = $path;
-    }
-
-    return $self->{'ifconfig'};
 }
 
 sub _get_interface_info {
@@ -107,7 +107,7 @@ sub _get_interface_info {
 }
 
 sub _get_unix_interface_info {
-  my ($class) = @_;
+  my ($self) = @_;
   my %if_info;
   my ($ip, $interface) = undef;
   #this is an attempt to fix tainting problems
@@ -118,9 +118,9 @@ sub _get_unix_interface_info {
     $ENV{'BASH_ENV'} = undef;
   }
   #now we set the local $ENV{'PATH'} to be only the path to ifconfig
-  my ($newpath)  = ( $class->ifconfig =~/(\/\w+)(?:\s\S+)$/) ;
+  my ($newpath)  = ( $self->ifconfig =~/(\/\w+)(?:\s\S+)$/) ;
   $ENV{'PATH'} = $newpath;
-  my $ifconfig = $class->ifconfig;
+  my $ifconfig = $self->ifconfig;
   # make sure nothing else has touched $/
   local $/ = "\n";
   my @ifconfig = `$ifconfig`;
