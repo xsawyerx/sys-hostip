@@ -1,6 +1,6 @@
 Revision history for Perl extension Sys::HostIP.
 
-1.4 xx.09.10
+1.4     11.09.10
     * New maintainer: Sawyer X (XSAWYERX)
     * Fixed RT #24002 (thanks gmc@gmcx.net and MARKLE)
     * Fixed RT #44845 (thanks Mikhael <miihael@sfc.ru>)
