@@ -5,17 +5,18 @@ use warnings;
 use Test::More tests => 8;
 use Sys::HostIP qw/ip ips ifconfig interfaces/;
 
-my $class = 'Sys::HostIP';
+my $class  = 'Sys::HostIP';
+my $hostip = Sys::HostIP->new;
 
 # -- ip() --
 my $sub_ip   = ip();
-my $class_ip = $class->ip;
+my $class_ip = $hostip->ip;
 
 ok( $class_ip =~ /^ \d+ (?: \. \d+ ){3} $/x, 'IP by class looks ok' );
 is( $class_ip, $sub_ip, 'IP by class matches IP by sub' );
 
 # -- ips() --
-my $class_ips = $class->ips;
+my $class_ips = $hostip->ips;
 isa_ok( $class_ips, 'ARRAY', 'scalar context ips() gets arrayref' );
 ok( 1 == grep( /^$class_ip$/, @{$class_ips} ), 'Found IP in IPs by class' );
 
@@ -29,7 +30,7 @@ SKIP: {
 };
 
 # -- interfaces() --
-my $interfaces = $class->interfaces;
+my $interfaces = $hostip->interfaces;
 isa_ok( $interfaces, 'HASH', 'scalar context interfaces gets hashref' );
 cmp_ok(
     scalar keys ( %{$interfaces} ),
