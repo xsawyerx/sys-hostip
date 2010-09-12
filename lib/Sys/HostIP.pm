@@ -12,31 +12,31 @@ $VERSION   = '1.7';
 @EXPORT_OK = qw( ip ips interfaces ifconfig );
 
 sub new {
-  my $class = shift || croak 'Cannot create new method in a functional way';
-  my %opts  = @_;
-  my $self  = bless {%opts}, $class;
+    my $class = shift || croak 'Cannot create new method in a functional way';
+    my %opts  = @_;
+    my $self  = bless {%opts}, $class;
 
-  $self->{'ifconfig'} ||= $self->_get_ifconfig;
+    $self->{'ifconfig'} ||= $self->_get_ifconfig;
 
-  return $self;
+    return $self;
 }
 
 sub _get_ifconfig {
-  my $self     = shift;
-  my $ifconfig = '/sbin/ifconfig -a';
+    my $self     = shift;
+    my $ifconfig = '/sbin/ifconfig -a';
 
-  if ( $^O =~ /(?: linux|openbsd|freebsd|netbsd|solaris|darwin )/xi ) {
-    $ifconfig =  '/sbin/ifconfig -a';
-  } elsif ( $^O eq 'aix' ) {
-    $ifconfig = '/usr/sbin/ifconfig -a';
-  } elsif  ( $^O eq 'irix' ) {
-    $ifconfig = '/usr/etc/ifconfig';
-  } else {
-    carp "Unknown system ($^O), guessing ifconfig lives in /sbin/ifconfig " .
-         "(email xsawyerx\@cpan.org with the location of your ifconfig)\n";
-  }
+    if ( $^O =~ /(?: linux|openbsd|freebsd|netbsd|solaris|darwin )/xi ) {
+        $ifconfig =  '/sbin/ifconfig -a';
+    } elsif ( $^O eq 'aix' ) {
+        $ifconfig = '/usr/sbin/ifconfig -a';
+    } elsif  ( $^O eq 'irix' ) {
+        $ifconfig = '/usr/etc/ifconfig';
+    } else {
+        carp "Unknown system ($^O), guessing ifconfig is in /sbin/ifconfig " .
+             "(email xsawyerx\@cpan.org with the location of your ifconfig)\n";
+    }
 
-  return $ifconfig;
+    return $ifconfig;
 }
 
 sub ifconfig {
