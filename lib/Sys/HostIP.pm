@@ -53,18 +53,56 @@ sub ifconfig {
 }
 
 sub ip {
-    my $self = shift || 'Sys::HostIP';
-    return $self->_get_interface_info( mode => 'ip' );
+    my $self    = shift || 'Sys::HostIP';
+    my $if_info = ref $self      ?
+                  $self->if_info :
+                  $self->_get_interface_info;
+
+    if ( $^O =~/(MSWin32|cygwin)/ ) {
+        foreach my $key ( sort keys %{$if_info} ) {
+            # should this be the default?
+            if ( $key =~ /Local Area Connection/ ) {
+                return ( $if_info->{$key} );
+            }
+        }
+    } else {
+        foreach my $key ( sort keys %{$if_info} ) {
+            # we don't want the loopback
+            next if ( $if_info->{$key} eq '127.0.0.1' );
+            # now we return the first one that comes up
+            return ( $if_info->{$key} );
+        }
+
+        # we get here if loopback is the only active device
+        return '127.0.0.1';
+    }
 }
 
 sub ips {
     my $self = shift || 'Sys::HostIP';
-    return $self->_get_interface_info( mode => 'ips' );
+
+    if ( ref $self ) {
+        return [ values %{ $self->if_info } ];
+    } else {
+        return [ values %{ $self->_get_interface_info } ];
+    }
 }
 
 sub interfaces {
     my $self = shift || 'Sys::HostIP';
-    return $self->_get_interface_info( mode => 'interfaces' );
+
+    if ( ref $self ) {
+        return $self->if_info;
+    } else {
+        return $self->_get_interface_info;
+    }
+}
+
+sub if_info {
+    my $self = shift;
+    $self->{'if_info'} or $self->{'if_info'} = $self->_get_interface_info;
+
+    return $self->{'if_info'};
 }
 
 sub _get_interface_info {
@@ -76,33 +114,6 @@ sub _get_interface_info {
         $if_info = $self->_get_win32_interface_info();
     } else {
         $if_info = $self->_get_unix_interface_info();
-    }
-
-    if ($params{mode} eq 'interfaces') {
-        return $if_info;
-
-    } elsif ( $params{mode} eq 'ips') {
-        return [values %$if_info];
-
-    } elsif ( $params{mode} eq 'ip') {
-        if ($^O =~/(MSWin32|cygwin)/) {
-            foreach my $key (sort keys %$if_info) {
-                # should this be the default?
-                if ($key=~/Local Area Connection/) {
-                    return ($if_info->{$key});
-                }
-            }
-        } else {
-            foreach my $key (sort keys %$if_info) {
-                # we don't want the loopback
-                next if ($if_info->{$key} eq '127.0.0.1');
-                # now we return the first one that comes up
-                return ($if_info->{$key});
-            }
-
-            # we get here if loopback is the only active device
-            return "127.0.0.1";
-        }
     }
 }
 
