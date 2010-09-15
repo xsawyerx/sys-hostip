@@ -17,38 +17,18 @@ sub new {
     my $self  = bless {%opts}, $class;
 
     $self->{'ifconfig'} ||= $self->_get_ifconfig;
+    $self->{'if_info'}  ||= $self->_get_interface_info;
 
     return $self;
-}
-
-sub _get_ifconfig {
-    my $self     = shift;
-    my $ifconfig = '/sbin/ifconfig -a';
-
-    if ( $^O =~ /(?: linux|openbsd|freebsd|netbsd|solaris|darwin )/xi ) {
-        $ifconfig =  '/sbin/ifconfig -a';
-    } elsif ( $^O eq 'aix' ) {
-        $ifconfig = '/usr/sbin/ifconfig -a';
-    } elsif  ( $^O eq 'irix' ) {
-        $ifconfig = '/usr/etc/ifconfig';
-    } else {
-        carp "Unknown system ($^O), guessing ifconfig is in /sbin/ifconfig " .
-             "(email xsawyerx\@cpan.org with the location of your ifconfig)\n";
-    }
-
-    return $ifconfig;
 }
 
 sub ifconfig {
     my $self = shift;
     my $path = shift;
 
-    if ( ref $self ) {
-        $path and $self->{'ifconfig'} = $path;
-    } else {
-        return $self->_get_ifconfig;
-    }
+    ref $self or return $self->_get_ifconfig;
 
+    $path and $self->{'ifconfig'} = $path;
     return $self->{'ifconfig'};
 }
 
@@ -81,28 +61,43 @@ sub ip {
 sub ips {
     my $self = shift || 'Sys::HostIP';
 
-    if ( ref $self ) {
-        return [ values %{ $self->if_info } ];
-    } else {
-        return [ values %{ $self->_get_interface_info } ];
-    }
+    return ref $self                               ?
+        [ values %{ $self->if_info             } ] :
+        [ values %{ $self->_get_interface_info } ];
 }
 
 sub interfaces {
     my $self = shift || 'Sys::HostIP';
 
-    if ( ref $self ) {
-        return $self->if_info;
-    } else {
-        return $self->_get_interface_info;
-    }
+    return ref $self      ?
+           $self->if_info :
+           $self->_get_interface_info;
 }
 
 sub if_info {
     my $self = shift;
-    $self->{'if_info'} or $self->{'if_info'} = $self->_get_interface_info;
+
+    ref $self or return $self->_get_ifconfig;
 
     return $self->{'if_info'};
+}
+
+sub _get_ifconfig {
+    my $self     = shift;
+    my $ifconfig = '/sbin/ifconfig -a';
+
+    if ( $^O =~ /(?: linux|openbsd|freebsd|netbsd|solaris|darwin )/xi ) {
+        $ifconfig =  '/sbin/ifconfig -a';
+    } elsif ( $^O eq 'aix' ) {
+        $ifconfig = '/usr/sbin/ifconfig -a';
+    } elsif  ( $^O eq 'irix' ) {
+        $ifconfig = '/usr/etc/ifconfig';
+    } else {
+        carp "Unknown system ($^O), guessing ifconfig is in /sbin/ifconfig " .
+             "(email xsawyerx\@cpan.org with the location of your ifconfig)\n";
+    }
+
+    return $ifconfig;
 }
 
 sub _get_interface_info {
@@ -269,6 +264,19 @@ with older versions.
 
 You can set the location of ifconfig with this attributes if the code doesn't
 know where your ifconfig lives.
+
+=head2 if_info
+
+The interface information. This is either created on new, or you can create
+it yourself at initialize.
+
+    # get the cached if_info
+    my $if_info = $hostip->if_info;
+
+    # create custom one at initialize
+    my $hostip = Sys::HostIP->new( if_info => {...} );
+
+If you use the object oriented interface, this value is cached.
 
 =head1 METHODS
 
