@@ -1,4 +1,11 @@
 Revision history for Perl extension Sys::HostIP.
+
+1.7     15.09.10
+        * Refactoring, refactoring, refactoring.
+        * If you're using object oriented style, the data is now cached!
+        * Create if_info on edit.
+        * Sorted version numbers
+
 1.6     12.09.10
         * ifconfig attr as documented in POD
         * Sorting ifconfig sub to _get_ifconfig
