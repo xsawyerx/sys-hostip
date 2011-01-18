@@ -199,6 +199,12 @@ sub _get_unix_interface_info {
 sub _get_win32_interface_info {
     my $self = shift;
     my %if_info;
+    my $regex_address = qr/
+        \s+
+        IP \s Address .* :
+        \s+
+        (\d+ (?: \. \d+ ){3} )
+    /x;
     my ( $line, $interface ) = undef;
 
     my @ipconfig = `ipconfig`;
@@ -212,7 +218,7 @@ sub _get_win32_interface_info {
         } elsif ($line =~/^\s$/) {
             next;
         } elsif ( 
-            ($line =~/\s+IP Address.*:\s+(\d+(?:\.\d+){3})/) and $interface) {
+            ($line =~ $regex_address) and $interface) {
                 $if_info{$interface} = $1;
                 $interface = undef;
             } elsif ($line =~/^Ethernet adapter\s+(.*):/) {
