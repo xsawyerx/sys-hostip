@@ -221,18 +221,17 @@ sub _get_win32_interface_info {
     foreach my $line (@ipconfig) {
         chomp($line);
 
-        if ($line =~/^Windows IP Configuration/) {
+        if ( $line =~/^Windows IP Configuration/ ) {
             # ignore the header
             next;
-        } elsif ($line =~/^\s$/) {
+        } elsif ( $line =~/^\s$/ ) {
             next;
-        } elsif ( 
-            ($line =~ $regexes{'address'}) and $interface) {
-                $if_info{$interface} = $1;
-                $interface = undef;
-            } elsif ($line =~ $regexes{'adapter'}) {
+        } elsif ( ( $line =~ $regexes{'address'} ) and $interface ) {
+            $if_info{$interface} = $1;
+            $interface = undef;
+        } elsif ( $line =~ $regexes{'adapter'} ) {
             $interface = $1;
-            chomp($interface);
+            chomp $interface;
         }
     }
     return \%if_info;
