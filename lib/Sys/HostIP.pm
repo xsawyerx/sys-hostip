@@ -5,9 +5,8 @@ package Sys::HostIP;
 
 use Carp;
 use Exporter;
-use vars qw( $VERSION @ISA @EXPORT_OK );
+use vars qw( @ISA @EXPORT_OK );
 
-$VERSION   = '1.7';
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw( ip ips interfaces ifconfig );
 
@@ -98,6 +97,10 @@ sub _get_ifconfig {
     }
 
     return $ifconfig;
+}
+
+sub _run_ipconfig {
+    return `ipconfig`;
 }
 
 sub _get_interface_info {
@@ -197,31 +200,44 @@ sub _get_unix_interface_info {
 } 
 
 sub _get_win32_interface_info {
-    my $self = shift;
-    my %if_info;
-    my ( $line, $interface ) = undef;
+    my $self    = shift;
+    my %regexes = (
+        address => qr/
+            \s+
+            IP(?:v4)? \s Address .* :
+            \s+
+            (\d+ (?: \. \d+ ){3} )
+        /x,
 
-    local $/ = "\r\n";
+        adapter => qr/
+            ^
+            Ethernet \s adapter
+            \s+
+            (.*) :
+        /x,
+    );
 
-    my @ipconfig = `ipconfig`;
+    my ( $interface, %if_info );
+
+    my @ipconfig = $self->_run_ipconfig;
 
     foreach my $line (@ipconfig) {
         chomp($line);
 
-        if ($line =~/^Windows IP Configuration/) {
+        if ( $line =~/^Windows IP Configuration/ ) {
             # ignore the header
             next;
-        } elsif ($line =~/^\s$/) {
+        } elsif ( $line =~/^\s$/ ) {
             next;
-        } elsif ( 
-            ($line =~/\s+IP Address.*:\s+(\d+(?:\.\d+){3})/) and $interface) {
-                $if_info{$interface} = $1;
-                $interface = undef;
-            } elsif ($line =~/^Ethernet adapter\s+(.*):/) {
+        } elsif ( ( $line =~ $regexes{'address'} ) and $interface ) {
+            $if_info{$interface} = $1;
+            $interface = undef;
+        } elsif ( $line =~ $regexes{'adapter'} ) {
             $interface = $1;
-            chomp($interface);
+            chomp $interface;
         }
     }
+
     return \%if_info;
 }
 
