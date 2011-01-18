@@ -5,9 +5,8 @@ package Sys::HostIP;
 
 use Carp;
 use Exporter;
-use vars qw( $VERSION @ISA @EXPORT_OK );
+use vars qw( @ISA @EXPORT_OK );
 
-$VERSION   = '1.7';
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw( ip ips interfaces ifconfig );
 
