@@ -205,6 +205,13 @@ sub _get_win32_interface_info {
         \s+
         (\d+ (?: \. \d+ ){3} )
     /x;
+    my $regex_adapter = qr/
+        ^
+        Ethernet \s adapter
+        \s+
+        (.*) :
+    /x;
+
     my ( $line, $interface ) = undef;
 
     my @ipconfig = `ipconfig`;
@@ -221,7 +228,7 @@ sub _get_win32_interface_info {
             ($line =~ $regex_address) and $interface) {
                 $if_info{$interface} = $1;
                 $interface = undef;
-            } elsif ($line =~/^Ethernet adapter\s+(.*):/) {
+            } elsif ($line =~ $regex_adapter) {
             $interface = $1;
             chomp($interface);
         }
