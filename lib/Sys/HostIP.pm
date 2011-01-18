@@ -100,6 +100,10 @@ sub _get_ifconfig {
     return $ifconfig;
 }
 
+sub _run_ipconfig {
+    return `ipconfig`;
+}
+
 sub _get_interface_info {
     my $self    = shift;
     my %params  = @_;
@@ -216,7 +220,7 @@ sub _get_win32_interface_info {
 
     my ( $interface, %if_info );
 
-    my @ipconfig = `ipconfig`;
+    my @ipconfig = $self->_run_ipconfig;
 
     foreach my $line (@ipconfig) {
         chomp($line);
