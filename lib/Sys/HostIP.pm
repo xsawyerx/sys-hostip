@@ -201,8 +201,6 @@ sub _get_win32_interface_info {
     my %if_info;
     my ( $line, $interface ) = undef;
 
-    local $/ = "\r\n";
-
     my @ipconfig = `ipconfig`;
 
     foreach my $line (@ipconfig) {
