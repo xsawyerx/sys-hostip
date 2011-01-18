@@ -205,7 +205,7 @@ sub _get_win32_interface_info {
     my %regexes = (
         address => qr/
             \s+
-            IP \s Address .* :
+            IP(?:v4)? \s Address .* :
             \s+
             (\d+ (?: \. \d+ ){3} )
         /x,
