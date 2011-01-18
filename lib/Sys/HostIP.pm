@@ -234,6 +234,7 @@ sub _get_win32_interface_info {
             chomp $interface;
         }
     }
+
     return \%if_info;
 }
 
