@@ -197,7 +197,7 @@ sub _get_unix_interface_info {
 } 
 
 sub _get_win32_interface_info {
-    my $self = shift;
+    my $self    = shift;
     my %regexes = (
         address => qr/
             \s+
@@ -214,8 +214,7 @@ sub _get_win32_interface_info {
         /x,
     );
 
-    my %if_info;
-    my ( $line, $interface ) = undef;
+    my ( $line, $interface, %if_info );
 
     my @ipconfig = `ipconfig`;
 
