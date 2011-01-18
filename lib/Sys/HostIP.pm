@@ -214,7 +214,7 @@ sub _get_win32_interface_info {
         /x,
     );
 
-    my ( $line, $interface, %if_info );
+    my ( $interface, %if_info );
 
     my @ipconfig = `ipconfig`;
 
