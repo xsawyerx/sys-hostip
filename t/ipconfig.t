@@ -7,6 +7,8 @@ use Test::TinyMocker;
 use File::Spec;
 use Sys::HostIP;
 
+my $hostip = Sys::HostIP->new;
+
 sub mock_run_ipconfig {
     my $filename = shift;
     my $file     = File::Spec->catfile( 't', 'data', $filename ); 
@@ -18,35 +20,35 @@ sub mock_run_ipconfig {
     return @output;
 }
 
-my $hostip = Sys::HostIP->new;
+sub mock_and_test {
+    my ( $file, $expected_results, $test_name ) = @_;
 
-mock 'Sys::HostIP'
-    => method '_run_ipconfig'
-    => should {
-        my $self = shift;
-        isa_ok( $self, 'Sys::HostIP' );
+    mock 'Sys::HostIP'
+        => method '_run_ipconfig'
+        => should {
+            my $self = shift;
+            isa_ok( $self, 'Sys::HostIP' );
 
-        return mock_run_ipconfig('ipconfig-2k.txt');
-    };
+            return mock_run_ipconfig($file);
+        };
 
-is_deeply(
+    is_deeply(
+        $expected_results,
+        $hostip->_get_win32_interface_info,
+        $test_name,
+    );
+
+}
+
+mock_and_test(
+    'ipconfig-2k.txt',
     { 'Local Area Connection' => '169.254.109.232' },
-    $hostip->_get_win32_interface_info,
     'Correct Win2K interface',
 );
 
-mock 'Sys::HostIP'
-    => method '_run_ipconfig'
-    => should {
-        my $self = shift;
-        isa_ok( $self, 'Sys::HostIP' );
-
-        return mock_run_ipconfig('ipconfig-xp.txt');
-    };
-
-is_deeply(
+mock_and_test(
+    'ipconfig-xp.txt',
     { 'Local Area Connection' => '0.0.0.0' },
-    $hostip->_get_win32_interface_info,
     'Correct WinXP interface',
 );
 
