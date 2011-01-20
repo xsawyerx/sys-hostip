@@ -1,5 +1,9 @@
 Revision history for Perl extension Sys::HostIP.
 
+1.81    20.01.11
+        * Refactoring testing code.
+        * Adding test to Windows 7 (Hilko Bengen).
+
 1.8     18.01.11
         * More tests, thanks to fenderson (Amir Meiry).
         * Fix for Windows 7 (Hilko Bengen).
