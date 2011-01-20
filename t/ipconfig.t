@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 4;
+use Test::More tests => 2 * 3;
 use Test::TinyMocker;
 
 use File::Spec;
@@ -50,5 +50,14 @@ mock_and_test(
     'ipconfig-xp.txt',
     { 'Local Area Connection' => '0.0.0.0' },
     'Correct WinXP interface',
+);
+
+mock_and_test(
+    'ipconfig-win7.txt',
+    {
+        'Local Area Connection'   => '192.168.0.10',
+        'Local Area Connection 2' => '192.168.1.20',
+    },
+    'Correct Win7 interface',
 );
 
