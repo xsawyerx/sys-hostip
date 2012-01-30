@@ -2,7 +2,6 @@ use strict;
 use warnings;
 
 use Test::More tests => 2 * 3;
-use Test::TinyMocker;
 
 use File::Spec;
 use Sys::HostIP;
@@ -23,14 +22,14 @@ sub mock_run_ipconfig {
 sub mock_and_test {
     my ( $file, $expected_results, $test_name ) = @_;
 
-    mock 'Sys::HostIP'
-        => method '_run_ipconfig'
-        => should {
-            my $self = shift;
-            isa_ok( $self, 'Sys::HostIP' );
+    no warnings qw/redefine once/;
 
-            return mock_run_ipconfig($file);
-        };
+    *Sys::HostIP::_run_ipconfig = sub {
+        my $self = shift;
+        isa_ok( $self, 'Sys::HostIP' );
+
+        return mock_run_ipconfig($file);
+    };
 
     is_deeply(
         $expected_results,
