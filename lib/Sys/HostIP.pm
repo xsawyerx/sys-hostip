@@ -120,11 +120,8 @@ sub _clean_ifconfig {
     my $self = shift;
     # this is an attempt to fix tainting problems
 
-    # $BASH_ENV must be unset to pass tainting problems if your system uses
-    # bash as /bin/sh
-    if (exists $ENV{'BASH_ENV'} and defined $ENV{'BASH_ENV'}) {
-        $ENV{'BASH_ENV'} = undef;
-    }
+    # removing $BASH_ENV, which exists if /bin/sh is your bash
+    delete $ENV{'BASH_ENV'};
 
     # now we set the local $ENV{'PATH'} to be only the path to ifconfig
     my $ifconfig = $self->ifconfig;
@@ -138,6 +135,7 @@ sub _get_unix_interface_info {
 
     # localize the environment
     local %ENV;
+
     # make sure nothing else has touched $/
     local $/ = "\n";
 
