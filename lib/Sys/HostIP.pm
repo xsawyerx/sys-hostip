@@ -293,7 +293,7 @@ with older versions.
 
     my $hostip = Sys::HostIP->new( ifconfig => '/path/to/your/ifconfig' );
 
-You can set the location of ifconfig with this attributes if the code doesn't
+You can set the location of ifconfig with this attribute if the code doesn't
 know where your ifconfig lives.
 
 =head2 if_info
@@ -316,8 +316,8 @@ If you use the object oriented interface, this value is cached.
     my $ip = $hostip->ip;
 
 Returns a scalar containing a best guess of your host machine's IP address. On
-unix systems, it will return loopback (127.0.0.1) if it can't find anything
-else.
+*nix (Unix, BSD, GNU/Linux, OSX, etc.) systems, it will return the loopback
+interface (127.0.0.1) if it can't find anything else.
 
 =head2 ips
 
@@ -376,6 +376,8 @@ Currently maintained by Sawyer X <xsawyerx@cpan.org>.
 =head1 TODO
 
 I haven't tested the win32 code with dialup or wireless connections.
+
+Machines with output in different languages (German, for example) fail.
 
 =head1 SEE ALSO
 
