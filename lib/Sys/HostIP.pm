@@ -115,11 +115,8 @@ sub _get_interface_info {
     }
 }
 
-sub _get_unix_interface_info {
+sub _clean_ifconfig {
     my $self = shift;
-
-    my %if_info;
-    my ( $ip, $interface ) = undef;
 
     # this is an attempt to fix tainting problems
     local %ENV;
@@ -131,10 +128,28 @@ sub _get_unix_interface_info {
     }
 
     # now we set the local $ENV{'PATH'} to be only the path to ifconfig
-    my ($newpath) = ( $self->ifconfig =~/(\/\w+)(?:\s\S+)$/) ;
+    my $regex = qr{
+    ( / \w+ )    # captured / and a word after
+    (?: \s \S+ ) # uncaptured space and something other than space
+    $
+    }x;
+
+    my ($newpath) = ( $self->ifconfig =~ $regex );
 
     $ENV{'PATH'} = $newpath;
     my $ifconfig = $self->ifconfig;
+
+    return $ifconfig;
+}
+
+sub _get_unix_interface_info {
+    my $self = shift;
+
+    my %if_info;
+    my ( $ip, $interface ) = undef;
+
+    # clean environment for taint mode
+    my $ifconfig = $self->_clean_ifconfig();
 
     # make sure nothing else has touched $/
     local $/ = "\n";
