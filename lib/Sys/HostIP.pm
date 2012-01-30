@@ -117,9 +117,7 @@ sub _get_interface_info {
 
 sub _clean_ifconfig {
     my $self = shift;
-
     # this is an attempt to fix tainting problems
-    local %ENV;
 
     # $BASH_ENV must be unset to pass tainting problems if your system uses
     # bash as /bin/sh
@@ -145,16 +143,17 @@ sub _clean_ifconfig {
 sub _get_unix_interface_info {
     my $self = shift;
 
+    # localize the environment
+    local %ENV;
+    # make sure nothing else has touched $/
+    local $/ = "\n";
+
     my %if_info;
     my ( $ip, $interface ) = undef;
 
     # clean environment for taint mode
-    my $ifconfig = $self->_clean_ifconfig();
-
-    # make sure nothing else has touched $/
-    local $/ = "\n";
-
-    my @ifconfig = `$ifconfig`;
+    my $ifconfig_bin = $self->_clean_ifconfig();
+    my @ifconfig     = `$ifconfig_bin`;
 
     foreach my $line (@ifconfig) {
         # output from 'ifconfig -a' looks something like this on every *nix i
