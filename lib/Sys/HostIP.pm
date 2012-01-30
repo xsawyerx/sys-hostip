@@ -5,6 +5,7 @@ package Sys::HostIP;
 
 use Carp;
 use Exporter;
+use File::Basename 'dirname';
 use vars qw( @ISA @EXPORT_OK );
 
 @ISA       = qw(Exporter);
@@ -126,16 +127,8 @@ sub _clean_ifconfig {
     }
 
     # now we set the local $ENV{'PATH'} to be only the path to ifconfig
-    my $regex = qr{
-    ( / \w+ )    # captured / and a word after
-    (?: \s \S+ ) # uncaptured space and something other than space
-    $
-    }x;
-
-    my ($newpath) = ( $self->ifconfig =~ $regex );
-
-    $ENV{'PATH'} = $newpath;
     my $ifconfig = $self->ifconfig;
+    $ENV{'PATH'} = dirname $ifconfig;
 
     return $ifconfig;
 }
