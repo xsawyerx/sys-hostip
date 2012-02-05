@@ -232,6 +232,10 @@ sub _get_unix_interface_info {
     return \%if_info;
 } 
 
+sub _run_ipconfig {
+    return `ipconfig`;
+}
+
 sub _get_win32_interface_info {
     my $self    = shift;
     my %regexes = (
@@ -250,7 +254,7 @@ sub _get_win32_interface_info {
         /x,
     );
 
-    my @ipconfig = `ipconfig`;
+    my @ipconfig = $self->_run_ipconfig();
     my ( $interface, %if_info );
 
     foreach my $line (@ipconfig) {
