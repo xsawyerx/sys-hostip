@@ -31,17 +31,23 @@ sub ifconfig {
         return $self->_get_ifconfig_binary;
     }
 
+    # set path
     $path and $self->{'ifconfig'} = $path;
+
     return $self->{'ifconfig'};
 }
 
 sub ip {
-    my $self    = shift || 'Sys::HostIP';
-    my $if_info = ref $self      ?
-                  $self->if_info :
-                  $self->_get_interface_info;
+    my $self = shift || 'Sys::HostIP';
+    my $if_info;
 
-    ref $self or carp 'Functional interface is deprecated';
+    # TODO: this to be removed in future versions
+    if ( ! ref $self ) {
+        carp 'Functional interface is deprecated';
+        $if_info = $self->_get_interface_info;
+    } else {
+        $if_info = $self->if_info;
+    }
 
     if ( $^O =~/(MSWin32|cygwin)/ ) {
         foreach my $key ( sort keys %{$if_info} ) {
@@ -66,21 +72,25 @@ sub ip {
 sub ips {
     my $self = shift || 'Sys::HostIP';
 
-    $self or carp 'Functional interface is deprecated';
+    # TODO: this to be removed in future versions
+    if ( ! ref $self ) {
+        carp 'Functional interface is deprecated';
+        return [ values %{ $self->_get_interface_info } ];
+    }
 
-    return ref $self                               ?
-        [ values %{ $self->if_info             } ] :
-        [ values %{ $self->_get_interface_info } ];
+    return [ values %{ $self->if_info } ];
 }
 
 sub interfaces {
     my $self = shift || 'Sys::HostIP';
 
-    $self or carp 'Functional interface is deprecated';
+    # TODO: this to be removed in future versions
+    if ( ! ref $self ) {
+        carp 'Functional interface is deprecated';
+        return $self->_get_interface_info;
+    }
 
-    return ref $self      ?
-           $self->if_info :
-           $self->_get_interface_info;
+   return $self->if_info;
 }
 
 sub if_info {
