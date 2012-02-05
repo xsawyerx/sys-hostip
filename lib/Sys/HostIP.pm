@@ -16,7 +16,7 @@ sub new {
     my %opts  = @_;
     my $self  = bless {%opts}, $class;
 
-    $self->{'ifconfig'} ||= $self->_get_ifconfig;
+    $self->{'ifconfig'} ||= $self->_get_ifconfig_binary;
     $self->{'if_info'}  ||= $self->_get_interface_info;
 
     return $self;
@@ -28,7 +28,7 @@ sub ifconfig {
 
     if ( ! ref $self ) {
         carp 'Functional interface is deprecated';
-        return $self->_get_ifconfig;
+        return $self->_get_ifconfig_binary;
     }
 
     $path and $self->{'ifconfig'} = $path;
@@ -88,13 +88,13 @@ sub if_info {
 
     if ( ! ref $self ) {
         carp 'Functional interface is deprecated';
-        return $self->_get_ifconfig;
+        return $self->_get_ifconfig_binary;
     }
 
     return $self->{'if_info'};
 }
 
-sub _get_ifconfig {
+sub _get_ifconfig_binary {
     my $self     = shift;
     my $ifconfig = '/sbin/ifconfig -a';
 
