@@ -157,8 +157,7 @@ sub _get_unix_interface_info {
     # make sure nothing else has touched $/
     local $/ = "\n";
 
-    my %if_info;
-    my ( $ip, $interface ) = undef;
+    my ( $ip, $interface, %if_info );
 
     # clean environment for taint mode
     my $ifconfig_bin = $self->_clean_ifconfig_env();
