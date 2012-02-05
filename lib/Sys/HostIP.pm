@@ -165,6 +165,7 @@ sub _get_unix_interface_info {
     my @ifconfig     = `$ifconfig_bin`;
 
     foreach my $line (@ifconfig) {
+        # TODO: refactor this into tests
         # output from 'ifconfig -a' looks something like this on every *nix i
         # could get my hand on except linux (this one's actually from OpenBSD):
         #
