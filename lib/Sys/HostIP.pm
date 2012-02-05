@@ -27,7 +27,6 @@ sub ifconfig {
     my $path = shift;
 
     if ( ! ref $self ) {
-        carp 'Functional interface is deprecated';
         return $self->_get_ifconfig_binary;
     }
 
@@ -41,9 +40,7 @@ sub ip {
     my $self = shift || 'Sys::HostIP';
     my $if_info;
 
-    # TODO: this to be removed in future versions
     if ( ! ref $self ) {
-        carp 'Functional interface is deprecated';
         $if_info = $self->_get_interface_info;
     } else {
         $if_info = $self->if_info;
@@ -72,9 +69,7 @@ sub ip {
 sub ips {
     my $self = shift || 'Sys::HostIP';
 
-    # TODO: this to be removed in future versions
     if ( ! ref $self ) {
-        carp 'Functional interface is deprecated';
         return [ values %{ $self->_get_interface_info } ];
     }
 
@@ -84,9 +79,7 @@ sub ips {
 sub interfaces {
     my $self = shift || 'Sys::HostIP';
 
-    # TODO: this to be removed in future versions
     if ( ! ref $self ) {
-        carp 'Functional interface is deprecated';
         return $self->_get_interface_info;
     }
 
@@ -97,7 +90,6 @@ sub if_info {
     my $self = shift;
 
     if ( ! ref $self ) {
-        carp 'Functional interface is deprecated';
         return $self->_get_ifconfig_binary;
     }
 
