@@ -26,7 +26,10 @@ sub ifconfig {
     my $self = shift;
     my $path = shift;
 
-    ref $self or return $self->_get_ifconfig;
+    if ( ! ref $self ) {
+        carp 'Functional interface is deprecated';
+        return $self->_get_ifconfig;
+    }
 
     $path and $self->{'ifconfig'} = $path;
     return $self->{'ifconfig'};
@@ -37,6 +40,8 @@ sub ip {
     my $if_info = ref $self      ?
                   $self->if_info :
                   $self->_get_interface_info;
+
+    ref $self or carp 'Functional interface is deprecated';
 
     if ( $^O =~/(MSWin32|cygwin)/ ) {
         foreach my $key ( sort keys %{$if_info} ) {
@@ -61,6 +66,8 @@ sub ip {
 sub ips {
     my $self = shift || 'Sys::HostIP';
 
+    $self or carp 'Functional interface is deprecated';
+
     return ref $self                               ?
         [ values %{ $self->if_info             } ] :
         [ values %{ $self->_get_interface_info } ];
@@ -68,6 +75,8 @@ sub ips {
 
 sub interfaces {
     my $self = shift || 'Sys::HostIP';
+
+    $self or carp 'Functional interface is deprecated';
 
     return ref $self      ?
            $self->if_info :
@@ -77,7 +86,10 @@ sub interfaces {
 sub if_info {
     my $self = shift;
 
-    ref $self or return $self->_get_ifconfig;
+    if ( ! ref $self ) {
+        carp 'Functional interface is deprecated';
+        return $self->_get_ifconfig;
+    }
 
     return $self->{'if_info'};
 }
@@ -262,20 +274,11 @@ __END__
 
 =head1 SYNOPSIS
 
-    # functional interface
-    use Sys::HostIP qw/ ips interfaces /;
-
-    my $ip_addresses = ips();
-    my $interfaces   = interfaces();
-
-    # object oriented interface
     use Sys::HostIP;
 
     my $hostip     = Sys::HostIP->new;
     my $ips        = $hostip->ips;
     my $interfaces = $hostip->interfaces;
-
-    $hostip->ifconfig("/sr/local/sbin/ifconfig"); # new location
 
 =head1 DESCRIPTION
 
@@ -283,9 +286,6 @@ Sys::HostIP does what it can to determine the ip address of your
 machine. All 3 methods work fine on every system that I've been able to test
 on. (Irix, OpenBSD, FreeBSD, NetBSD, Solaris, Linux, OSX, Win32, Cygwin). It 
 does this by parsing ifconfig(8) (ipconfig on Win32/Cygwin) output. 
-
-It has an object oriented interface and a functional one for compatibility
-with older versions.
 
 =head1 ATTRIBUTES
 
@@ -306,8 +306,6 @@ it yourself at initialize.
 
     # create custom one at initialize
     my $hostip = Sys::HostIP->new( if_info => {...} );
-
-If you use the object oriented interface, this value is cached.
 
 =head1 METHODS
 
@@ -342,30 +340,9 @@ IP addresses Sys::HostIP could find on your machine.
 
 =head2 EXPORT
 
-Nothing by default!
+Nothing.
 
-To export something explicitly, use the syntax:
-
-    use HostIP qw/ip ips interfaces/;
-    # that will get you those three subroutines, for example
-
-All of these subroutines will match the object oriented interface methods.
-
-=over 4
-
-=item * ip
-
-    my $ip = ip();
-
-=item * ips
-
-    my $ips = ips();
-
-=item * interfaces
-
-    my $interfaces = interfaces();
-
-=back
+This module is completely Object Oriented.
 
 =head1 HISTORY
 
