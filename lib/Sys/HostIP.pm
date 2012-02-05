@@ -16,7 +16,7 @@ sub new {
     my %opts  = @_;
     my $self  = bless {%opts}, $class;
 
-    $self->{'ifconfig'} ||= $self->_get_ifconfig;
+    $self->{'ifconfig'} ||= $self->_get_ifconfig_binary;
     $self->{'if_info'}  ||= $self->_get_interface_info;
 
     return $self;
@@ -28,20 +28,26 @@ sub ifconfig {
 
     if ( ! ref $self ) {
         carp 'Functional interface is deprecated';
-        return $self->_get_ifconfig;
+        return $self->_get_ifconfig_binary;
     }
 
+    # set path
     $path and $self->{'ifconfig'} = $path;
+
     return $self->{'ifconfig'};
 }
 
 sub ip {
-    my $self    = shift || 'Sys::HostIP';
-    my $if_info = ref $self      ?
-                  $self->if_info :
-                  $self->_get_interface_info;
+    my $self = shift || 'Sys::HostIP';
+    my $if_info;
 
-    ref $self or carp 'Functional interface is deprecated';
+    # TODO: this to be removed in future versions
+    if ( ! ref $self ) {
+        carp 'Functional interface is deprecated';
+        $if_info = $self->_get_interface_info;
+    } else {
+        $if_info = $self->if_info;
+    }
 
     if ( $^O =~/(MSWin32|cygwin)/ ) {
         foreach my $key ( sort keys %{$if_info} ) {
@@ -66,21 +72,25 @@ sub ip {
 sub ips {
     my $self = shift || 'Sys::HostIP';
 
-    $self or carp 'Functional interface is deprecated';
+    # TODO: this to be removed in future versions
+    if ( ! ref $self ) {
+        carp 'Functional interface is deprecated';
+        return [ values %{ $self->_get_interface_info } ];
+    }
 
-    return ref $self                               ?
-        [ values %{ $self->if_info             } ] :
-        [ values %{ $self->_get_interface_info } ];
+    return [ values %{ $self->if_info } ];
 }
 
 sub interfaces {
     my $self = shift || 'Sys::HostIP';
 
-    $self or carp 'Functional interface is deprecated';
+    # TODO: this to be removed in future versions
+    if ( ! ref $self ) {
+        carp 'Functional interface is deprecated';
+        return $self->_get_interface_info;
+    }
 
-    return ref $self      ?
-           $self->if_info :
-           $self->_get_interface_info;
+   return $self->if_info;
 }
 
 sub if_info {
@@ -88,13 +98,13 @@ sub if_info {
 
     if ( ! ref $self ) {
         carp 'Functional interface is deprecated';
-        return $self->_get_ifconfig;
+        return $self->_get_ifconfig_binary;
     }
 
     return $self->{'if_info'};
 }
 
-sub _get_ifconfig {
+sub _get_ifconfig_binary {
     my $self     = shift;
     my $ifconfig = '/sbin/ifconfig -a';
 
@@ -112,10 +122,6 @@ sub _get_ifconfig {
     return $ifconfig;
 }
 
-sub _run_ipconfig {
-    return `ipconfig`;
-}
-
 sub _get_interface_info {
     my $self    = shift;
     my %params  = @_;
@@ -128,7 +134,7 @@ sub _get_interface_info {
     }
 }
 
-sub _clean_ifconfig {
+sub _clean_ifconfig_env {
     my $self = shift;
     # this is an attempt to fix tainting problems
 
@@ -151,14 +157,14 @@ sub _get_unix_interface_info {
     # make sure nothing else has touched $/
     local $/ = "\n";
 
-    my %if_info;
-    my ( $ip, $interface ) = undef;
+    my ( $ip, $interface, %if_info );
 
     # clean environment for taint mode
-    my $ifconfig_bin = $self->_clean_ifconfig();
+    my $ifconfig_bin = $self->_clean_ifconfig_env();
     my @ifconfig     = `$ifconfig_bin`;
 
     foreach my $line (@ifconfig) {
+        # TODO: refactor this into tests
         # output from 'ifconfig -a' looks something like this on every *nix i
         # could get my hand on except linux (this one's actually from OpenBSD):
         #
@@ -244,9 +250,8 @@ sub _get_win32_interface_info {
         /x,
     );
 
+    my @ipconfig = `ipconfig`;
     my ( $interface, %if_info );
-
-    my @ipconfig = $self->_run_ipconfig;
 
     foreach my $line (@ipconfig) {
         chomp($line);
