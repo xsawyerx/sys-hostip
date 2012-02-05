@@ -128,7 +128,7 @@ sub _get_interface_info {
     }
 }
 
-sub _clean_ifconfig {
+sub _clean_ifconfig_env {
     my $self = shift;
     # this is an attempt to fix tainting problems
 
@@ -155,7 +155,7 @@ sub _get_unix_interface_info {
     my ( $ip, $interface ) = undef;
 
     # clean environment for taint mode
-    my $ifconfig_bin = $self->_clean_ifconfig();
+    my $ifconfig_bin = $self->_clean_ifconfig_env();
     my @ifconfig     = `$ifconfig_bin`;
 
     foreach my $line (@ifconfig) {
