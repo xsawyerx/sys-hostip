@@ -49,7 +49,7 @@ sub ip {
     if ( $^O =~/(MSWin32|cygwin)/ ) {
         foreach my $key ( sort keys %{$if_info} ) {
             # should this be the default?
-            if ( $key =~ /Local Area Connection/ ) {
+            if ( $key =~ /Local Area Connection|Подключение по локальной сети/ ) {
                 return ( $if_info->{$key} );
             }
         }
@@ -233,16 +233,24 @@ sub _get_win32_interface_info {
     my %regexes = (
         address => qr/
             \s+
-            IP(?:v4)? \s Address .* :
+            IP(?:v4)? [\s-] (?:Address|адрес) .* :
             \s+
             (\d+ (?: \. \d+ ){3} )
         /x,
 
         adapter => qr/
             ^
-            Ethernet \s adapter
-            \s+
-            (.*) :
+            (?:
+                Ethernet \s adapter
+                \s+
+                (.*)
+            |
+                (.*)
+                \s - \s
+                Ethernet \s адаптер
+            )
+             
+             :
         /x,
     );
 
@@ -251,8 +259,7 @@ sub _get_win32_interface_info {
 
     foreach my $line (@ipconfig) {
         chomp($line);
-
-        if ( $line =~/^Windows IP Configuration/ ) {
+        if ( $line =~/^(?:Windows IP Configuration|Настройка протокола IP для Windows)/ ) {
             # ignore the header
             next;
         } elsif ( $line =~/^\s$/ ) {
@@ -261,7 +268,7 @@ sub _get_win32_interface_info {
             $if_info{$interface} = $1;
             $interface = undef;
         } elsif ( $line =~ $regexes{'adapter'} ) {
-            $interface = $1;
+            $interface = $1 || $2;
             chomp $interface;
         }
     }
