@@ -51,7 +51,7 @@ sub ip {
         $if_info = $self->if_info;
     }
 
-    if ( $^O =~/(MSWin32|cygwin)/ ) {
+    if ( _is_win() ) {
         foreach my $key ( sort keys %{$if_info} ) {
             # should this be the default?
             if ( $key =~ /Local Area Connection/ ) {
@@ -124,7 +124,7 @@ sub _get_interface_info {
     my %params  = @_;
     my $if_info = {};
 
-    if ( $^O =~/(?: MSWin32|cygwin )/xi ) {
+    if ( _is_win() ) {
         $if_info = $self->_get_win32_interface_info();
     } else {
         $if_info = $self->_get_unix_interface_info();
