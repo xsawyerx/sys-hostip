@@ -11,9 +11,7 @@ use vars qw( @ISA @EXPORT_OK );
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw( ip ips interfaces ifconfig );
 
-sub _is_win {
-    return $^O =~ qr/(MSWin32|cygwin)/;
-}
+my $is_win = $^O =~ qr/(MSWin32|cygwin)/;
 
 sub new {
     my $class = shift || croak 'Cannot create new method in a functional way';
@@ -21,7 +19,7 @@ sub new {
     my $self  = bless {%opts}, $class;
 
     # only get ifconfig binary if it's not a windows
-    $self->{'ifconfig'} ||= _is_win() ? '' : $self->_get_ifconfig_binary;
+    $self->{'ifconfig'} ||= $is_win ? '' : $self->_get_ifconfig_binary;
     $self->{'if_info'}  ||= $self->_get_interface_info;
 
     return $self;
@@ -51,7 +49,7 @@ sub ip {
         $if_info = $self->if_info;
     }
 
-    if ( _is_win() ) {
+    if ($is_win) {
         foreach my $key ( sort keys %{$if_info} ) {
             # should this be the default?
             if ( $key =~ /Local Area Connection/ ) {
@@ -124,7 +122,7 @@ sub _get_interface_info {
     my %params  = @_;
     my $if_info = {};
 
-    if ( _is_win() ) {
+    if ($is_win) {
         $if_info = $self->_get_win32_interface_info();
     } else {
         $if_info = $self->_get_unix_interface_info();
