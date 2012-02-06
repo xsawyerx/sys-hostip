@@ -334,7 +334,7 @@ Returns an array ref containing all the IP addresses of your machine.
 
     my $interfaces = $hostip->interfaces;
 
-    foreach my $interface ( @{$interfaces} ) {
+    foreach my $interface ( keys %{$interfaces} ) {
         my $ip = $interfaces->{$interface};
         print "$interface => $ip"\n";
     }
