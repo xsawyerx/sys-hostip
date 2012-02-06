@@ -1,10 +1,17 @@
 Revision history for Perl extension Sys::HostIP.
 
+1.91    06.02.12
+        * Functional interface is back.                 *
+        * Sys::HostIP will remain backwards compatible. *
+        * Fix bug reported by Mr. Muskrat where ifconfig would be searched
+          even on Windows. This failed because Windows doesn't have ifconfig.
+        * Refactoring, cleanups.
+
 1.90    05.02.12
         * Functional interface is now deprecated.
         * Fix taint mode, use File::Basename for it.
         * Remove need for Test::TinyMocker, Test::Exception.
-        * Other clean ups.
+        * Other cleanups.
 
 1.81    20.01.11
         * Refactoring testing code.
