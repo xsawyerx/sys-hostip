@@ -11,12 +11,17 @@ use vars qw( @ISA @EXPORT_OK );
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw( ip ips interfaces ifconfig );
 
+sub _is_win {
+    return $^O =~ qr/(MSWin32|cygwin)/;
+}
+
 sub new {
     my $class = shift || croak 'Cannot create new method in a functional way';
     my %opts  = @_;
     my $self  = bless {%opts}, $class;
 
-    $self->{'ifconfig'} ||= $self->_get_ifconfig_binary;
+    # only get ifconfig binary if it's not a windows
+    $self->{'ifconfig'} ||= _is_win() ? '' : $self->_get_ifconfig_binary;
     $self->{'if_info'}  ||= $self->_get_interface_info;
 
     return $self;
