@@ -1,5 +1,9 @@
 Revision history for Perl extension Sys::HostIP.
 
+1.92    14.02.12
+        * GH #3, RT #74701: Doc fix by Mr. Muskrat.
+        * Dump some data in tests to try and fix failing tests.
+
 1.91    06.02.12
         * Functional interface is back.                 *
         * Sys::HostIP will remain backwards compatible. *
