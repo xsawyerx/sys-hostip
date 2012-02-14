@@ -1,5 +1,9 @@
 Revision history for Perl extension Sys::HostIP.
 
+1.93    14.02.12
+        * GH #4: Matthew Musgrove (Mr. Muskrat) unearthed a bug in tests that
+          would plan an incorrect number of tests by operating system. Fixed.
+
 1.92    14.02.12
         * GH #3, RT #74701: Doc fix by Mr. Muskrat.
         * Dump some data in tests to try and fix failing tests.
