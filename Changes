@@ -1,5 +1,9 @@
 Revision history for Perl extension Sys::HostIP.
 
+1.93    18.02.12
+        * Don't return 127.0.0.1 as default device if it wasn't really found.
+          (tests have verified some machines don't have it)
+
 1.93    14.02.12
         * GH #4: Matthew Musgrove (Mr. Muskrat) unearthed a bug in tests that
           would plan an incorrect number of tests by operating system. Fixed.
