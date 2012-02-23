@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 8;
+use Test::More tests => 6;
 use Sys::HostIP qw/ip ips ifconfig interfaces/;
 use Data::Dumper;
 
@@ -20,16 +20,6 @@ my $class_ips = $hostip->ips;
 isa_ok( $class_ips, 'ARRAY', 'scalar context ips() gets arrayref' );
 ok( 1 == grep( /^$class_ip$/, @{$class_ips} ), 'Found IP in IPs by class' );
 
-# skipping in case it's MSWin32 or cygwin?
-SKIP: {
-    skip 'Issues on Windows' => 1 if $^O =~ /(MSWin32|cygwin)/;
-    diag(Dumper($class_ips));
-    ok(
-        grep( /^127\.0\.0\.1$/, @{$class_ips} ),
-        'Found 127.0.0.1 in IPs by class',
-    );
-};
-
 # -- interfaces() --
 my $interfaces = $hostip->interfaces;
 isa_ok( $interfaces, 'HASH', 'scalar context interfaces gets hashref' );
@@ -39,14 +29,4 @@ cmp_ok(
     scalar @{$class_ips},
     'Matching number of interfaces and ips',
 );
-
-# skipping in case it's MSWin32 or cygwin?
-SKIP: {
-    skip 'Issues on Windows' => 1 if $^O =~ /(MSWin32|cygwin)/;
-    diag(Dumper($interfaces));
-    ok(
-        grep( /^127\.0\.0\.1$/, values %{$interfaces} ),
-        'Found 127.0.0.1 in interfaces',
-    );
-};
 
