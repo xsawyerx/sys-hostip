@@ -12,6 +12,7 @@ my $hostip = Sys::HostIP->new;
 my $sub_ip   = ip();
 my $class_ip = $hostip->ip;
 
+diag("Class IP: $class_ip");
 ok( $class_ip =~ /^ \d+ (?: \. \d+ ){3} $/x, 'IP by class looks ok' );
 is( $class_ip, $sub_ip, 'IP by class matches IP by sub' );
 
