@@ -344,7 +344,7 @@ Returns an array ref containing all the IP addresses of your machine.
 
     foreach my $interface ( keys %{$interfaces} ) {
         my $ip = $interfaces->{$interface};
-        print "$interface => $ip"\n";
+        print "$interface => $ip\n";
     }
 
 Returns a hash ref containing all pairs of interfaces and their corresponding
