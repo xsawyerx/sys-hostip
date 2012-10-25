@@ -1,5 +1,9 @@
 Revision history for Perl extension Sys::HostIP.
 
+1.96    25.10.12
+        * No functional changes.
+        * RT #80399: doc typo by Peter Newman.
+
 1.95    23.02.12
         * Trying to please testers more. (I'm looking at you, Chris!)
 
