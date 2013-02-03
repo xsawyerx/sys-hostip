@@ -1,5 +1,9 @@
 Revision history for Perl extension Sys::HostIP.
 
+1.97    03.02.13
+        * Adding support for Tru64 UNIX.
+          (Thank you, Robert Urban!)
+
 1.96    25.10.12
         * No functional changes.
         * RT #80399: doc typo by Peter Newman.
