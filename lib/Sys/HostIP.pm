@@ -117,6 +117,8 @@ sub _get_ifconfig_binary {
         $ifconfig = '/usr/sbin/ifconfig -a';
     } elsif ( $^O eq 'irix' ) {
         $ifconfig = '/usr/etc/ifconfig';
+    } elsif ( $^O eq 'dec_osf' ) {
+        $ifconfig = '/sbin/ifconfig';
     } else {
         carp "Unknown system ($^O), guessing ifconfig is in /sbin/ifconfig " .
              "(email xsawyerx\@cpan.org with the location of your ifconfig)\n";
