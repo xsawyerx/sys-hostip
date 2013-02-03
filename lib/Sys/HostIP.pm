@@ -115,7 +115,7 @@ sub _get_ifconfig_binary {
         $ifconfig =  '/sbin/ifconfig -a';
     } elsif ( $^O eq 'aix' ) {
         $ifconfig = '/usr/sbin/ifconfig -a';
-    } elsif  ( $^O eq 'irix' ) {
+    } elsif ( $^O eq 'irix' ) {
         $ifconfig = '/usr/etc/ifconfig';
     } else {
         carp "Unknown system ($^O), guessing ifconfig is in /sbin/ifconfig " .
