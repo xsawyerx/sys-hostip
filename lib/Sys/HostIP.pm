@@ -111,8 +111,10 @@ sub _get_ifconfig_binary {
     my $self     = shift;
     my $ifconfig = '/sbin/ifconfig -a';
 
-    if ( $^O =~ /(?: linux|openbsd|freebsd|netbsd|solaris|darwin )/xi ) {
+    if ( $^O =~ /(?: openbsd|freebsd|netbsd|solaris|darwin )/xi ) {
         $ifconfig =  '/sbin/ifconfig -a';
+    } elsif ( $^O eq 'linux' ) {
+        $ifconfig = '/sbin/ip address';
     } elsif ( $^O eq 'aix' ) {
         $ifconfig = '/usr/sbin/ifconfig -a';
     } elsif ( $^O eq 'irix' ) {
@@ -190,6 +192,17 @@ sub _get_unix_interface_info {
         #           inet addr:127.0.0.1  Mask:255.0.0.0
         #           UP LOOPBACK RUNNING  MTU:3924  Metric:1
         #
+        # In linux, using /sbin/ip it looks like:
+        # [goldenboy:~] adamb $ ip address
+        # 1: lo:   <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default 
+        #     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+        #     inet 127.0.0.1/8 scope host lo
+        #        valid_lft forever preferred_lft forever
+        #     inet6 ::1/128 scope host 
+        #        valid_lft forever preferred_lft forever
+        # 2: eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000
+        #     link/ether 9c:b6:54:a5:64:60 brd ff:ff:ff:ff:ff:ff
+        # 
         # so the regexen involved here have to deal with the following: 1)
         # there's no ':' after an interface's name in linux 2) in linux, it's
         # "inet addr:127.0.0.1" instead of "inet 127.0.0.1" hence the somewhat
@@ -204,7 +217,12 @@ sub _get_unix_interface_info {
             $if_info{$interface} .= $line;
         }
         # FIXME: refactor this regex
-        elsif (($interface) = ($line =~/(^\w+(?:\d)?(?:\.\d+)?(?:\:\d+)?)/)) {
+        elsif (($interface) = ($line =~ /(^\w+(?:\d)?(?:\.\d+)?(?:\:\d+)?)/)) {
+            if ($interface =~ /^\d+/ ) {
+                ($interface) =
+                    $line =~ /^\d+\:\s(\w+(?:\d)?(?:\.\d+)?(?:\:\d+)?)/;
+            }
+
             $line =~s/\w+\d(\:)?\s+//;
             $if_info{$interface} = $line;
         }
