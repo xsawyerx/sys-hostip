@@ -1,0 +1,111 @@
+# SYNOPSIS
+
+    use Sys::HostIP;
+
+    my $hostip     = Sys::HostIP->new;
+    my $ips        = $hostip->ips;
+    my $interfaces = $hostip->interfaces;
+
+# DESCRIPTION
+
+Sys::HostIP does what it can to determine the ip address of your
+machine. All 3 methods work fine on every system that I've been able to test
+on. (Irix, OpenBSD, FreeBSD, NetBSD, Solaris, Linux, OSX, Win32, Cygwin). It 
+does this by parsing ifconfig(8) (ipconfig on Win32/Cygwin) output. 
+
+It has an object oriented interface and a functional one for compatibility
+with older versions.
+
+# ATTRIBUTES
+
+## ifconfig
+
+    my $hostip = Sys::HostIP->new( ifconfig => '/path/to/your/ifconfig' );
+
+You can set the location of ifconfig with this attribute if the code doesn't
+know where your ifconfig lives.
+
+If you use the object oriented interface, this value is cached.
+
+## if\_info
+
+The interface information. This is either created on new, or you can create
+it yourself at initialize.
+
+    # get the cached if_info
+    my $if_info = $hostip->if_info;
+
+    # create custom one at initialize
+    my $hostip = Sys::HostIP->new( if_info => {...} );
+
+# METHODS
+
+## ip
+
+    my $ip = $hostip->ip;
+
+Returns a scalar containing a best guess of your host machine's IP address. On
+\*nix (Unix, BSD, GNU/Linux, OSX, etc.) systems, it will return the loopback
+interface (127.0.0.1) if it can't find anything else.
+
+## ips
+
+    my $all_ips = $hostip->ips;
+    foreach my $ip ( @{$all_ips} ) {
+        print "IP: $ip\n";
+    }
+
+Returns an array ref containing all the IP addresses of your machine.
+
+## interfaces
+
+    my $interfaces = $hostip->interfaces;
+
+    foreach my $interface ( keys %{$interfaces} ) {
+        my $ip = $interfaces->{$interface};
+        print "$interface => $ip\n";
+    }
+
+Returns a hash ref containing all pairs of interfaces and their corresponding
+IP addresses Sys::HostIP could find on your machine.
+
+## EXPORT
+
+Nothing by default!
+
+To export something explicitly, use the syntax:
+Nothing.
+
+    use HostIP qw/ip ips interfaces/;
+    # that will get you those three subroutines, for example
+
+All of these subroutines will match the object oriented interface methods.
+
+- ip
+
+        my $ip = ip();
+
+- ips
+
+        my $ips = ips();
+
+- interfaces
+
+        my $interfaces = interfaces();
+
+# HISTORY
+
+Originally written by Jonathan Schatz <bluelines@divisionbyzero.com>.
+
+Currently maintained by Sawyer X <xsawyerx@cpan.org>.
+
+# TODO
+
+I haven't tested the win32 code with dialup or wireless connections.
+
+Machines with output in different languages (German, for example) fail.
+
+# SEE ALSO
+
+- ifconfig(8)
+- ipconfig
