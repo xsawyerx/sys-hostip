@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 2 * 3;
+use Test::More tests => 2 * 5;
 
 use File::Spec;
 use Sys::HostIP;
@@ -60,3 +60,18 @@ mock_and_test(
     'Correct Win7 interface',
 );
 
+mock_and_test(
+    'ipconfig-win7-empty-name.txt',
+    {
+        '' => '192.168.1.101',
+    },
+    'Win7 interface, empty name',
+    );
+
+mock_and_test(
+    'ipconfig-win10.txt',
+    {
+        'Ethernet' => '192.168.1.100',
+    },
+    'Correct Win10 interface',
+    );

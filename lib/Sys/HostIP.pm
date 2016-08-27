@@ -265,7 +265,7 @@ sub _get_win32_interface_info {
             next;
         } elsif ( $line =~/^\s$/ ) {
             next;
-        } elsif ( ( $line =~ $regexes{'address'} ) and $interface ) {
+        } elsif ( ( $line =~ $regexes{'address'} ) and defined $interface ) {
             $if_info{$interface} = $1;
             $interface = undef;
         } elsif ( $line =~ $regexes{'adapter'} ) {
