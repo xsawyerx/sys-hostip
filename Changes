@@ -1,5 +1,9 @@
 Revision history for Perl extension Sys::HostIP.
 
+1.98    27.08.16
+        * Accept empty interfaces names on Windows. (Hilko Bengen)
+        * Add Windows 10 test (en-US). (Hilko Bengen)
+
 1.97    03.02.13
         * Adding support for Tru64 UNIX.
           (Thank you, Robert Urban!)
