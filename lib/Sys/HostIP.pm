@@ -281,6 +281,10 @@ sub _get_win32_interface_info {
 
 __END__
 
+=head1 NAME
+
+Sys::HostIP - Try extra hard to get IP address related info
+
 =head1 SYNOPSIS
 
     use Sys::HostIP;
