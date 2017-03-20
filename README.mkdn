@@ -10,8 +10,8 @@
 
 Sys::HostIP does what it can to determine the ip address of your
 machine. All 3 methods work fine on every system that I've been able to test
-on. (Irix, OpenBSD, FreeBSD, NetBSD, Solaris, Linux, OSX, Win32, Cygwin). It 
-does this by parsing ifconfig(8) (ipconfig on Win32/Cygwin) output. 
+on. (Irix, OpenBSD, FreeBSD, NetBSD, Solaris, Linux, OSX, Win32, Cygwin). It
+does this by parsing ifconfig(8) (ipconfig on Win32/Cygwin) output.
 
 It has an object oriented interface and a functional one for compatibility
 with older versions.
