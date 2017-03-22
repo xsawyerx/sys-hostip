@@ -1,3 +1,7 @@
+# NAME
+
+Sys::HostIP - Try extra hard to get IP address related info
+
 # SYNOPSIS
 
     use Sys::HostIP;
