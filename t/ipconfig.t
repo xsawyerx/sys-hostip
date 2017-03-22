@@ -10,7 +10,7 @@ my $hostip = Sys::HostIP->new;
 
 sub mock_run_ipconfig {
     my $filename = shift;
-    my $file     = File::Spec->catfile( 't', 'data', $filename ); 
+    my $file     = File::Spec->catfile( 't', 'data', $filename );
 
     open my $fh, '<', $file or die "Error opening $file: $!\n";
     my @output = <$fh>;

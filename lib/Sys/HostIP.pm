@@ -170,7 +170,7 @@ sub _get_unix_interface_info {
         #
         # gershiwin:~# /sbin/ifconfig -a
         # lo0: flags=8009<UP,LOOPBACK,MULTICAST>
-        #         inet 127.0.0.1 netmask 0xff000000 
+        #         inet 127.0.0.1 netmask 0xff000000
         # lo1: flags=8008<LOOPBACK,MULTICAST>
         # xl0: flags=8843<UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST>
         #         media: Ethernet autoselect (100baseTX full-duplex)
@@ -178,15 +178,15 @@ sub _get_unix_interface_info {
         #         inet 10.0.0.2 netmask 0xfffffff0 broadcast 10.0.0.255
         # sl0: flags=c010<POINTOPOINT,LINK2,MULTICAST>
         # sl1: flags=c010<POINTOPOINT,LINK2,MULTICAST>
-        # 
+        #
         # in linux it's a little bit different:
-        # 
-        # [jschatz@nooky Sys-IP]$ /sbin/ifconfig 
-        #  eth0      Link encap:Ethernet  HWaddr 00:C0:4F:60:6F:C2  
+        #
+        # [jschatz@nooky Sys-IP]$ /sbin/ifconfig
+        #  eth0      Link encap:Ethernet  HWaddr 00:C0:4F:60:6F:C2
         #           inet addr:10.0.3.82  Bcast:10.0.255.255  Mask:255.255.0.0
         #           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-        #           Interrupt:19 Base address:0xec00 
-        #  lo        Link encap:Local Loopback  
+        #           Interrupt:19 Base address:0xec00
+        #  lo        Link encap:Local Loopback
         #           inet addr:127.0.0.1  Mask:255.0.0.0
         #           UP LOOPBACK RUNNING  MTU:3924  Metric:1
         #
@@ -230,7 +230,7 @@ sub _get_unix_interface_info {
     # (some os's like openbsd list inactive interfaces when 'ifconfig -a' is
     # used, and we don't care about those
     return \%if_info;
-} 
+}
 
 sub _run_ipconfig {
     return `ipconfig`;
@@ -293,8 +293,8 @@ __END__
 
 Sys::HostIP does what it can to determine the ip address of your
 machine. All 3 methods work fine on every system that I've been able to test
-on. (Irix, OpenBSD, FreeBSD, NetBSD, Solaris, Linux, OSX, Win32, Cygwin). It 
-does this by parsing ifconfig(8) (ipconfig on Win32/Cygwin) output. 
+on. (Irix, OpenBSD, FreeBSD, NetBSD, Solaris, Linux, OSX, Win32, Cygwin). It
+does this by parsing ifconfig(8) (ipconfig on Win32/Cygwin) output.
 
 It has an object oriented interface and a functional one for compatibility
 with older versions.
