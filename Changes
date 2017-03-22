@@ -2,6 +2,8 @@ Revision history for Perl extension Sys::HostIP.
 
 {{$NEXT}}
 
+1.99      2017-03-22 13:52:36+01:00 Europe/Amsterdam
+
     * Restore missing NAME section. (Nick Morrott)
     * Add Travis-CI. (Paul Cochrane)
     * Cleanup whitespace. (Paul Cochrane)
