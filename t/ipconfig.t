@@ -32,8 +32,8 @@ sub mock_and_test {
     };
 
     is_deeply(
-        $expected_results,
         $hostip->_get_win32_interface_info,
+        $expected_results,
         $test_name,
     );
 
