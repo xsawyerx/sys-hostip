@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 2 * 5;
+use Test::More tests => 2 * 6;
 
 use File::Spec;
 use Sys::HostIP;
@@ -74,4 +74,12 @@ mock_and_test(
         'Ethernet' => '192.168.1.100',
     },
     'Correct Win10 interface',
+    );
+
+mock_and_test(
+    'ipconfig-win2008-sv_SE.txt',
+    {
+        'Anslutning till lokalt n�tverk' => '192.168.40.241',
+    },
+    'Correct Windows Server 2008 interface in Swedish locale',
     );

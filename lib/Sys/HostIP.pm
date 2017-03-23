@@ -241,14 +241,14 @@ sub _get_win32_interface_info {
     my %regexes = (
         address => qr/
             \s+
-            IP(?:v4)? \s Address .* :
+            IP(?:v4)? .*? :
             \s+
             (\d+ (?: \. \d+ ){3} )
         /x,
 
         adapter => qr/
             ^
-            Ethernet \s adapter
+            Ethernet (?:\s?|-) \w+
             \s+
             (.*) :
         /x,
@@ -260,7 +260,7 @@ sub _get_win32_interface_info {
     foreach my $line (@ipconfig) {
         chomp($line);
 
-        if ( $line =~/^Windows IP Configuration/ ) {
+        if ( $line =~ /Windows/ ) {
             # ignore the header
             next;
         } elsif ( $line =~/^\s$/ ) {
