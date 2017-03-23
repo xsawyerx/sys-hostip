@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 2 * 6;
+use Test::More tests => 2 * 7;
 
 use File::Spec;
 use Sys::HostIP;
@@ -82,4 +82,12 @@ mock_and_test(
         'Anslutning till lokalt n�tverk' => '192.168.40.241',
     },
     'Correct Windows Server 2008 interface in Swedish locale',
+    );
+
+mock_and_test(
+    'ipconfig-win7-de_DE.txt',
+    {
+        'LAN-Verbindung' => '10.0.2.15',
+    },
+    'Correct Windows 7 interface in German locale',
     );
