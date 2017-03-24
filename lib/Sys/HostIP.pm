@@ -248,7 +248,7 @@ sub _get_win32_interface_info {
 
         adapter => qr/
             ^
-            Ethernet (?:\s?|-) \w+
+            (?:Ethernet(?:\s?|-)\w+|\w+\s+Ethernet)
             \s+
             (.*) :
         /x,
@@ -271,6 +271,7 @@ sub _get_win32_interface_info {
         } elsif ( $line =~ $regexes{'adapter'} ) {
             $interface = $1;
             chomp $interface;
+            $interface =~ s/\s+$//g;  # remove trailing whitespace, if any
         }
     }
 
