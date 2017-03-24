@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 2 * 8;
+use Test::More tests => 2 * 9;
 
 use File::Spec;
 use Sys::HostIP;
@@ -99,4 +99,13 @@ mock_and_test(
         'VirtualBox Host-Only Network' => '192.168.56.1',
     },
     'Correct Windows 7 interface in French locale',
+    );
+
+mock_and_test(
+    'ipconfig-win7-it_IT.txt',
+    {
+        'LAN-Verbindung' => '192.168.2.118',
+        'VirtualBox Host-Only Network' => '192.168.56.1',
+    },
+    'Correct Windows 7 interface in Italian locale',
     );
