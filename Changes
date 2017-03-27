@@ -2,6 +2,11 @@ Revision history for Perl extension Sys::HostIP.
 
 {{$NEXT}}
 
+    * Fix Windows 7 Finish, Italian, French, German.
+      (Paul Cochrane)
+    * Fix Swedish.
+      (Paul Cochrane)
+
 1.99      2017-03-22 13:52:36+01:00 Europe/Amsterdam
 
     * Restore missing NAME section. (Nick Morrott)
