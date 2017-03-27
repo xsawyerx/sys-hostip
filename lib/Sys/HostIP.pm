@@ -241,14 +241,14 @@ sub _get_win32_interface_info {
     my %regexes = (
         address => qr/
             \s+
-            IP(?:v4)? \s Address .* :
+            IP(?:v4)? .*? :
             \s+
             (\d+ (?: \. \d+ ){3} )
         /x,
 
         adapter => qr/
             ^
-            Ethernet \s adapter
+            (?:Ethernet(?:\s?|-)\w+|\w+\s+Ethernet)
             \s+
             (.*) :
         /x,
@@ -260,7 +260,7 @@ sub _get_win32_interface_info {
     foreach my $line (@ipconfig) {
         chomp($line);
 
-        if ( $line =~/^Windows IP Configuration/ ) {
+        if ( $line =~ /Windows/ ) {
             # ignore the header
             next;
         } elsif ( $line =~/^\s$/ ) {
@@ -271,6 +271,7 @@ sub _get_win32_interface_info {
         } elsif ( $line =~ $regexes{'adapter'} ) {
             $interface = $1;
             chomp $interface;
+            $interface =~ s/\s+$//g;  # remove trailing whitespace, if any
         }
     }
 
@@ -394,7 +395,9 @@ Currently maintained by Sawyer X <xsawyerx@cpan.org>.
 
 I haven't tested the win32 code with dialup or wireless connections.
 
-Machines with output in different languages (German, for example) fail.
+Machines with output in some languages other than English fail.
+Neverthless, the code has been shown to work in German, Swedish, French,
+Italian, and Finnish locales.
 
 =head1 COPYRIGHT AND LICENSE
 

@@ -107,7 +107,9 @@ Currently maintained by Sawyer X <xsawyerx@cpan.org>.
 
 I haven't tested the win32 code with dialup or wireless connections.
 
-Machines with output in different languages (German, for example) fail.
+Machines with output in some languages other than English fail.
+Neverthless, the code has been shown to work in German, Swedish, French,
+Italian, and Finnish locales.
 
 # COPYRIGHT AND LICENSE
 
