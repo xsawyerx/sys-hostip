@@ -50,12 +50,8 @@ sub ip {
     }
 
     if ($is_win) {
-        foreach my $key ( sort keys %{$if_info} ) {
-            # should this be the default?
-            if ( $key =~ /Local Area Connection/ ) {
-                return ( $if_info->{$key} );
-            }
-        }
+	my @if_keys = sort keys %{$if_info};
+        return ( $if_info->{$if_keys[0]} );
     } else {
         my $lo_found;
 
