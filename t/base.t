@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use Test::More tests => 6;
 use Sys::HostIP qw/ip ips ifconfig interfaces/;
-use Data::Dumper;
 
 my $hostip = Sys::HostIP->new;
 
