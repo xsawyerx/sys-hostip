@@ -4,9 +4,8 @@ use strict;
 use warnings;
 
 use Test::More;
-use File::Spec;
 use Sys::HostIP qw/ip ips ifconfig interfaces/;
-use Sys::HostIP::MockUtils qw/mock_run_ipconfig/;
+use Sys::HostIP::MockUtils qw/mock_run_ipconfig mock_win32_hostip/;
 
 my @ipconfigs = qw(
   ipconfig-2k.txt
@@ -62,18 +61,4 @@ sub base_tests {
         scalar @{$class_ips},
         'Matching number of interfaces and ips',
     );
-}
-
-sub mock_win32_hostip {
-    my $file = shift;
-
-    no warnings qw/redefine once/;
-
-    my $hostip = Sys::HostIP->new;
-    *Sys::HostIP::_is_win = sub { return 1 };
-    *Sys::HostIP::_run_ipconfig = sub { return mock_run_ipconfig($file) };
-
-    $hostip->{'if_info'} = $hostip->_get_interface_info;
-
-    return $hostip;
 }
