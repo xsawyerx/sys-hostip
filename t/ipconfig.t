@@ -5,21 +5,14 @@ use Test::More tests => 2 * 10;
 
 use File::Spec;
 use Sys::HostIP;
-use Sys::HostIP::MockUtils qw/mock_run_ipconfig/;
-
-my $hostip = Sys::HostIP->new;
+use Sys::HostIP::MockUtils qw/mock_win32_hostip/;
 
 sub mock_and_test {
     my ( $file, $expected_results, $test_name ) = @_;
 
-    no warnings qw/redefine once/;
+    my $hostip = mock_win32_hostip($file);
 
-    *Sys::HostIP::_run_ipconfig = sub {
-        my $self = shift;
-        isa_ok( $self, 'Sys::HostIP' );
-
-        return mock_run_ipconfig($file);
-    };
+    isa_ok( $hostip, 'Sys::HostIP' );
 
     is_deeply(
         $hostip->_get_win32_interface_info,
