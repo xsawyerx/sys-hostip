@@ -9,6 +9,11 @@ main() unless caller;
 
 sub main {
     my $hostip = Sys::HostIP->new;
+    base_tests($hostip);
+}
+
+sub base_tests {
+    my $hostip = shift;
 
     # -- ip() --
     my $sub_ip   = ip();
