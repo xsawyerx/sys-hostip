@@ -4,8 +4,9 @@ use strict;
 use warnings;
 
 use Test::More;
-use Sys::HostIP qw/ip ips ifconfig interfaces/;
 use File::Spec;
+use Sys::HostIP qw/ip ips ifconfig interfaces/;
+use Sys::HostIP::MockUtils qw/mock_run_ipconfig/;
 
 my @ipconfigs = qw(
   ipconfig-2k.txt
@@ -75,15 +76,4 @@ sub mock_win32_hostip {
     $hostip->{'if_info'} = $hostip->_get_interface_info;
 
     return $hostip;
-}
-
-sub mock_run_ipconfig {
-    my $filename = shift;
-    my $file     = File::Spec->catfile( 't', 'data', $filename );
-
-    open my $fh, '<', $file or die "Error opening $file: $!\n";
-    my @output = <$fh>;
-    close $fh or die "Error closing $file: $!\n";
-
-    return @output;
 }

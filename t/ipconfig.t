@@ -5,19 +5,9 @@ use Test::More tests => 2 * 10;
 
 use File::Spec;
 use Sys::HostIP;
+use Sys::HostIP::MockUtils qw/mock_run_ipconfig/;
 
 my $hostip = Sys::HostIP->new;
-
-sub mock_run_ipconfig {
-    my $filename = shift;
-    my $file     = File::Spec->catfile( 't', 'data', $filename );
-
-    open my $fh, '<', $file or die "Error opening $file: $!\n";
-    my @output = <$fh>;
-    close $fh or die "Error closing $file: $!\n";
-
-    return @output;
-}
 
 sub mock_and_test {
     my ( $file, $expected_results, $test_name ) = @_;
