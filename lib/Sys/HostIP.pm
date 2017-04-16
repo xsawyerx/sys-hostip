@@ -18,7 +18,7 @@ sub new {
     my $self  = bless {%opts}, $class;
 
     # only get ifconfig binary if it's not a windows
-    $self->{'ifconfig'} ||= $self->_is_win ? '' : $self->_get_ifconfig_binary;
+    $self->{'ifconfig'} ||= _is_win() ? '' : $self->_get_ifconfig_binary;
     $self->{'if_info'}  ||= $self->_get_interface_info;
 
     return $self;
@@ -48,7 +48,7 @@ sub ip {
         $if_info = $self->if_info;
     }
 
-    if ($self->_is_win) {
+    if (_is_win()) {
 	my @if_keys = sort keys %{$if_info};
         return ( $if_info->{$if_keys[0]} );
     } else {
@@ -128,7 +128,7 @@ sub _is_win {
 
 sub _get_interface_info {
     my $self    = shift;
-    my $if_info = $self->_is_win                     ?
+    my $if_info = _is_win()                          ?
                   $self->_get_win32_interface_info() :
                   $self->_get_unix_interface_info();
 }
