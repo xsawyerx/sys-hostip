@@ -1,7 +1,8 @@
-use strict;
-use warnings;
 package Sys::HostIP;
 # ABSTRACT: Try extra hard to get IP address related info
+
+use strict;
+use warnings;
 
 use Carp;
 use Exporter;
