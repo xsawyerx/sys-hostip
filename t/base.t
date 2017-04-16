@@ -5,7 +5,7 @@ use warnings;
 
 use Test::More;
 use Sys::HostIP qw/ip ips ifconfig interfaces/;
-use Sys::HostIP::MockUtils qw/mock_run_ipconfig mock_win32_hostip/;
+use t::lib::MockUtils qw/mock_run_ipconfig mock_win32_hostip/;
 
 my @ipconfigs = qw(
   ipconfig-2k.txt

@@ -1,4 +1,4 @@
-package Sys::HostIP::MockUtils;
+package t::lib::MockUtils;
 # ABSTRACT: Mocking utilities to help testing multiple systems
 
 use strict;

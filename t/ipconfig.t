@@ -5,7 +5,7 @@ use Test::More tests => 2 * 10;
 
 use File::Spec;
 use Sys::HostIP;
-use Sys::HostIP::MockUtils qw/mock_win32_hostip/;
+use t::lib::MockUtils qw/mock_win32_hostip/;
 
 sub test_mock_ipconfig {
     my ( $file, $expected_results, $test_name ) = @_;
