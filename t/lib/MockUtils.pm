@@ -37,3 +37,5 @@ sub mock_run_ipconfig {
 
     return @output;
 }
+
+1;
