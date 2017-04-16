@@ -3,12 +3,12 @@ package t::lib::MockUtils;
 
 use strict;
 use warnings;
+use vars qw( @ISA @EXPORT_OK );
 
 use Carp;
 use Exporter;
-use vars qw( @ISA @EXPORT_OK );
-
 use File::Spec;
+use Sys::HostIP;
 
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw( mock_run_ipconfig mock_win32_hostip );
