@@ -46,14 +46,16 @@ sub ip {
 
     if ( ! ref $self ) {
         $if_info = $self->_get_interface_info;
-    } else {
+    }
+    else {
         $if_info = $self->if_info;
     }
 
     if ($IS_WIN) {
 	my @if_keys = sort keys %{$if_info};
         return ( $if_info->{$if_keys[0]} );
-    } else {
+    }
+    else {
         my $lo_found;
 
         foreach my $key ( sort keys %{$if_info} ) {
@@ -106,13 +108,17 @@ sub _get_ifconfig_binary {
 
     if ( $^O =~ /(?: linux|openbsd|freebsd|netbsd|solaris|darwin )/xi ) {
         $ifconfig =  '/sbin/ifconfig -a';
-    } elsif ( $^O eq 'aix' ) {
+    }
+    elsif ( $^O eq 'aix' ) {
         $ifconfig = '/usr/sbin/ifconfig -a';
-    } elsif ( $^O eq 'irix' ) {
+    }
+    elsif ( $^O eq 'irix' ) {
         $ifconfig = '/usr/etc/ifconfig';
-    } elsif ( $^O eq 'dec_osf' ) {
+    }
+    elsif ( $^O eq 'dec_osf' ) {
         $ifconfig = '/sbin/ifconfig';
-    } else {
+    }
+    else {
         carp "Unknown system ($^O), guessing ifconfig is in /sbin/ifconfig " .
              "(email xsawyerx\@cpan.org with the location of your ifconfig)\n";
     }
@@ -257,12 +263,15 @@ sub _get_win32_interface_info {
         if ( $line =~ /Windows/ ) {
             # ignore the header
             next;
-        } elsif ( $line =~/^\s$/ ) {
+        }
+        elsif ( $line =~/^\s$/ ) {
             next;
-        } elsif ( ( $line =~ $regexes{'address'} ) and defined $interface ) {
+        }
+        elsif ( ( $line =~ $regexes{'address'} ) and defined $interface ) {
             $if_info{$interface} = $1;
             $interface = undef;
-        } elsif ( $line =~ $regexes{'adapter'} ) {
+        }
+        elsif ( $line =~ $regexes{'adapter'} ) {
             $interface = $1;
             chomp $interface;
             $interface =~ s/\s+$//g;  # remove trailing whitespace, if any
