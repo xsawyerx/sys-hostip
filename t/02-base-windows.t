@@ -20,7 +20,7 @@ my @ipconfigs = qw(
 );
 
 
-my $num_base_tests = 9;
+my $num_base_tests = 11;
 # this is the number of times the mocked _run_ipconfig() method is called
 # per call to base_tests()
 my $num_windows_mocking_checks = 4;

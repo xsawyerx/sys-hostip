@@ -65,7 +65,7 @@ sub base_tests {
     # -- interfaces() --
     my $sub_interfaces = interfaces();
     my $interfaces = $hostip->interfaces;
-    isa_ok( $interfaces, 'HASH', 'scalar context interfaces gets hashref' );
+    isa_ok( $interfaces, 'HASH', 'scalar context interfaces() gets hashref' );
     cmp_ok(
         scalar keys ( %{$interfaces} ),
         '==',
@@ -74,6 +74,13 @@ sub base_tests {
     );
     is_deeply($interfaces, $sub_interfaces,
         'interfaces() output by class and sub are equal');
+
+    # -- if_info() --
+    my $if_info = $hostip->if_info;
+    isa_ok( $if_info, 'HASH', 'scalar context if_info() gets hashref' );
+    my $if_info_hostip = Sys::HostIP->new(if_info => { 'if_name' => '1.2.3.4' });
+    is_deeply( $if_info_hostip->if_info, { 'if_name' => '1.2.3.4' },
+        'if_info set as attribute' );
 }
 
 1;
