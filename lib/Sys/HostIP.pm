@@ -12,9 +12,10 @@ use vars qw( @ISA @EXPORT_OK );
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw( ip ips interfaces ifconfig );
 
-our $IS_WIN = $^O =~ qr/(MSWin32|cygwin)/;
+our $IS_WIN = $^O =~ qr/(MSWin32|cygwin)/xms; ## no critic qw(Variables::ProhibitPunctuationVars)
 
-sub new {
+sub new { ## no critic qw(Subroutines::RequireArgUnpacking)
+
     my $class = shift || croak 'Cannot create new method in a functional way';
     my %opts  = @_;
     my $self  = bless {%opts}, $class;
@@ -106,19 +107,16 @@ sub _get_ifconfig_binary {
     my $self     = shift;
     my $ifconfig = '/sbin/ifconfig -a';
 
+    ## no critic qw(Variables::ProhibitPunctuationVars)
     if ( $^O =~ /(?: linux|openbsd|freebsd|netbsd|solaris|darwin )/xi ) {
         $ifconfig =  '/sbin/ifconfig -a';
-    }
-    elsif ( $^O eq 'aix' ) {
+    } elsif ( $^O eq 'aix' ) {
         $ifconfig = '/usr/sbin/ifconfig -a';
-    }
-    elsif ( $^O eq 'irix' ) {
+    } elsif ( $^O eq 'irix' ) {
         $ifconfig = '/usr/etc/ifconfig';
-    }
-    elsif ( $^O eq 'dec_osf' ) {
+    } elsif ( $^O eq 'dec_osf' ) {
         $ifconfig = '/sbin/ifconfig';
-    }
-    else {
+    } else {
         carp "Unknown system ($^O), guessing ifconfig is in /sbin/ifconfig " .
              "(email xsawyerx\@cpan.org with the location of your ifconfig)\n";
     }
