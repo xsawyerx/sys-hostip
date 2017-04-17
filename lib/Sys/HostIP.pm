@@ -97,10 +97,6 @@ sub interfaces {
 sub if_info {
     my $self = shift;
 
-    if ( ! ref $self ) {
-        return $self->_get_ifconfig_binary;
-    }
-
     return $self->{'if_info'};
 }
 
