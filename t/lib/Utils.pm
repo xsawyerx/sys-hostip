@@ -53,11 +53,17 @@ sub base_tests {
     is( $class_ip, $sub_ip, 'IP by class matches IP by sub' );
 
     # -- ips() --
+    my $sub_ips   = ips();
     my $class_ips = $hostip->ips;
     isa_ok( $class_ips, 'ARRAY', 'scalar context ips() gets arrayref' );
     ok( 1 == grep( /^$class_ip$/, @{$class_ips} ), 'Found IP in IPs by class' );
+    is( scalar @{$class_ips}, scalar @{$sub_ips},
+        'Length of class and sub ips() output is equal' );
+    is_deeply( [sort @{$class_ips}], [sort @{$sub_ips}],
+        'IPs by class match IPs by sub' );
 
     # -- interfaces() --
+    my $sub_interfaces = interfaces();
     my $interfaces = $hostip->interfaces;
     isa_ok( $interfaces, 'HASH', 'scalar context interfaces gets hashref' );
     cmp_ok(
@@ -66,6 +72,8 @@ sub base_tests {
         scalar @{$class_ips},
         'Matching number of interfaces and ips',
     );
+    is_deeply($interfaces, $sub_interfaces,
+        'interfaces() output by class and sub are equal');
 }
 
 1;

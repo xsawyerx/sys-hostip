@@ -20,10 +20,10 @@ my @ipconfigs = qw(
 );
 
 
-my $num_base_tests = 6;
+my $num_base_tests = 9;
 # this is the number of times the mocked _run_ipconfig() method is called
 # per call to base_tests()
-my $num_windows_mocking_checks = 2;
+my $num_windows_mocking_checks = 4;
 plan tests => ( $num_base_tests + $num_windows_mocking_checks ) * scalar @ipconfigs;
 
 # run mocked windows base tests
