@@ -15,8 +15,9 @@ use vars qw( @ISA @EXPORT_OK );
 our $IS_WIN = $^O =~ qr/(MSWin32|cygwin)/xms; ## no critic qw(Variables::ProhibitPunctuationVars)
 
 sub new { ## no critic qw(Subroutines::RequireArgUnpacking)
+    my $class = shift
+        or croak 'Cannot create new method in a functional way';
 
-    my $class = shift || croak 'Cannot create new method in a functional way';
     my %opts  = @_;
     my $self  = bless {%opts}, $class;
 
