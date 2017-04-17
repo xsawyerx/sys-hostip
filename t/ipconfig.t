@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 2 * 10;
+use Test::More tests => 3 * 10;
 
 use File::Spec;
 use Sys::HostIP;
