@@ -109,7 +109,7 @@ sub _get_ifconfig_binary {
     my $ifconfig = '/sbin/ifconfig -a';
 
     ## no critic qw(Variables::ProhibitPunctuationVars)
-    if ( $^O =~ /(?: linux|openbsd|freebsd|netbsd|solaris|darwin )/xi ) {
+    if ( $^O =~ /(?: linux|openbsd|freebsd|netbsd|solaris|darwin )/xmsi ) {
         $ifconfig =  '/sbin/ifconfig -a';
     } elsif ( $^O eq 'aix' ) {
         $ifconfig = '/usr/sbin/ifconfig -a';
@@ -259,11 +259,11 @@ sub _get_win32_interface_info {
     foreach my $line (@ipconfig) {
         chomp($line);
 
-        if ( $line =~ /Windows/ ) {
+        if ( $line =~ /Windows/xms ) {
             # ignore the header
             next;
         }
-        elsif ( $line =~/^\s$/ ) {
+        elsif ( $line =~/^\s$/xms ) {
             next;
         }
         elsif ( ( $line =~ $regexes{'address'} ) and defined $interface ) {
@@ -273,7 +273,7 @@ sub _get_win32_interface_info {
         elsif ( $line =~ $regexes{'adapter'} ) {
             $interface = $1;
             chomp $interface;
-            $interface =~ s/\s+$//g;  # remove trailing whitespace, if any
+            $interface =~ s/\s+$//gxms;  # remove trailing whitespace, if any
         }
     }
 
