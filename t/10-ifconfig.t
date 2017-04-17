@@ -1,5 +1,8 @@
+#!perl
+
 use strict;
 use warnings;
+
 use Test::More;
 use Sys::HostIP;
 
@@ -25,4 +28,3 @@ is( $object->ifconfig('my_path'), 'my_path', 'ifconfig with object and param' );
 
 $object->{'ifconfig'} = 'my_ifconfig';
 is( $object->ifconfig, 'my_ifconfig', 'ifconfig without path');
-
