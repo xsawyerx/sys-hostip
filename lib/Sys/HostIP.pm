@@ -1,4 +1,5 @@
 package Sys::HostIP;
+
 # ABSTRACT: Try extra hard to get IP address related info
 
 use strict;
@@ -18,8 +19,8 @@ sub new { ## no critic qw(Subroutines::RequireArgUnpacking)
     my $class = shift
         or croak 'Cannot create new method in a functional way';
 
-    my %opts  = @_;
-    my $self  = bless {%opts}, $class;
+    my %opts = @_;
+    my $self = bless {%opts}, $class;
 
     # only get ifconfig binary if it's not a windows
     $self->{'ifconfig'} ||= $IS_WIN ? '' : $self->_get_ifconfig_binary;
@@ -32,7 +33,7 @@ sub ifconfig {
     my $self = shift;
     my $path = shift;
 
-    if ( ! ref $self ) {
+    if ( !ref $self ) {
         return $self->_get_ifconfig_binary;
     }
 
@@ -46,21 +47,20 @@ sub ip {
     my $self = shift || 'Sys::HostIP';
     my $if_info;
 
-    if ( ! ref $self ) {
+    if ( !ref $self ) {
         $if_info = $self->_get_interface_info;
-    }
-    else {
+    } else {
         $if_info = $self->if_info;
     }
 
     if ($IS_WIN) {
-	my @if_keys = sort keys %{$if_info};
-        return ( $if_info->{$if_keys[0]} );
-    }
-    else {
+        my @if_keys = sort keys %{$if_info};
+        return ( $if_info->{ $if_keys[0] } );
+    } else {
         my $lo_found;
 
         foreach my $key ( sort keys %{$if_info} ) {
+
             # we don't want the loopback
             if ( $if_info->{$key} eq '127.0.0.1' ) {
                 $lo_found++;
@@ -81,7 +81,7 @@ sub ip {
 sub ips {
     my $self = shift || 'Sys::HostIP';
 
-    if ( ! ref $self ) {
+    if ( !ref $self ) {
         return [ values %{ $self->_get_interface_info } ];
     }
 
@@ -91,11 +91,11 @@ sub ips {
 sub interfaces {
     my $self = shift || 'Sys::HostIP';
 
-    if ( ! ref $self ) {
+    if ( !ref $self ) {
         return $self->_get_interface_info;
     }
 
-   return $self->if_info;
+    return $self->if_info;
 }
 
 sub if_info {
@@ -110,7 +110,7 @@ sub _get_ifconfig_binary {
 
     ## no critic qw(Variables::ProhibitPunctuationVars)
     if ( $^O =~ /(?: linux|openbsd|freebsd|netbsd|solaris|darwin )/xmsi ) {
-        $ifconfig =  '/sbin/ifconfig -a';
+        $ifconfig = '/sbin/ifconfig -a';
     } elsif ( $^O eq 'aix' ) {
         $ifconfig = '/usr/sbin/ifconfig -a';
     } elsif ( $^O eq 'irix' ) {
@@ -118,8 +118,8 @@ sub _get_ifconfig_binary {
     } elsif ( $^O eq 'dec_osf' ) {
         $ifconfig = '/sbin/ifconfig';
     } else {
-        carp "Unknown system ($^O), guessing ifconfig is in /sbin/ifconfig " .
-             "(email xsawyerx\@cpan.org with the location of your ifconfig)\n";
+        carp "Unknown system ($^O), guessing ifconfig is in /sbin/ifconfig "
+            . "(email xsawyerx\@cpan.org with the location of your ifconfig)\n";
     }
 
     return $ifconfig;
@@ -135,6 +135,7 @@ sub _get_interface_info {
 
 sub _clean_ifconfig_env {
     my $self = shift;
+
     # this is an attempt to fix tainting problems
 
     # removing $BASH_ENV, which exists if /bin/sh is your bash
@@ -165,6 +166,7 @@ sub _get_unix_interface_info {
     my @ifconfig     = `$ifconfig_bin`;
 
     foreach my $line (@ifconfig) {
+
         # TODO: refactor this into tests
         # output from 'ifconfig -a' looks something like this on every *nix i
         # could get my hand on except linux (this one's actually from OpenBSD):
@@ -201,29 +203,35 @@ sub _get_unix_interface_info {
         # letters followed (possibly) by an number and a colon, then we've got an
         # interface. if the line starts with a space, then it's the info from the
         # interface that we just found, and we stick the contents into %if_info
-        if ( ($line =~/^\s+/) && ($interface) ) {
+        if ( ( $line =~ /^\s+/ ) && ($interface) ) {
             $if_info{$interface} .= $line;
         }
+
         # FIXME: refactor this regex
-        elsif (($interface) = ($line =~/(^\w+(?:\d)?(?:\.\d+)?(?:\:\d+)?)/)) {
-            $line =~s/\w+\d(\:)?\s+//;
+        elsif ( ($interface)
+            = ( $line =~ /(^\w+(?:\d)?(?:\.\d+)?(?:\:\d+)?)/ ) )
+        {
+            $line =~ s/\w+\d(\:)?\s+//;
             $if_info{$interface} = $line;
         }
     }
 
-    foreach my $key (keys %if_info) {
+    foreach my $key ( keys %if_info ) {
+
         # now we want to get rid of all the other crap in the ifconfig
         # output. we just want the ip address. perhaps a future version can
         # return even more useful results (netmask, etc).....
-        if (my ($ip) = ($if_info{$key} =~/inet (?:addr\:)?(\d+(?:\.\d+){3})/)) {
+        if ( my ($ip)
+            = ( $if_info{$key} =~ /inet (?:addr\:)?(\d+(?:\.\d+){3})/ ) )
+        {
             $if_info{$key} = $ip;
-        }
-        else {
-          # ok, no ip address here, which means this interface isn't
-          # active. some os's (openbsd for instance) spit out ifconfig info for
-          # inactive devices. this is pretty much worthless for us, so we
-          # delete it from the hash
-         delete $if_info{$key};
+        } else {
+
+            # ok, no ip address here, which means this interface isn't
+            # active. some os's (openbsd for instance) spit out ifconfig info for
+            # inactive devices. this is pretty much worthless for us, so we
+            # delete it from the hash
+            delete $if_info{$key};
         }
     }
 
@@ -262,20 +270,18 @@ sub _get_win32_interface_info {
         chomp($line);
 
         if ( $line =~ /Windows/xms ) {
+
             # ignore the header
             next;
-        }
-        elsif ( $line =~/^\s$/xms ) {
+        } elsif ( $line =~ /^\s$/xms ) {
             next;
-        }
-        elsif ( ( $line =~ $regexes{'address'} ) and defined $interface ) {
+        } elsif ( ( $line =~ $regexes{'address'} ) and defined $interface ) {
             $if_info{$interface} = $1;
             $interface = undef;
-        }
-        elsif ( $line =~ $regexes{'adapter'} ) {
+        } elsif ( $line =~ $regexes{'adapter'} ) {
             $interface = $1;
             chomp $interface;
-            $interface =~ s/\s+$//gxms;  # remove trailing whitespace, if any
+            $interface =~ s/\s+$//gxms; # remove trailing whitespace, if any
         }
     }
 
