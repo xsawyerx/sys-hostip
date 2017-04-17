@@ -141,6 +141,8 @@ sub _clean_ifconfig_env {
     delete $ENV{'BASH_ENV'};
 
     # now we set the local $ENV{'PATH'} to be only the path to ifconfig
+    # We have localized %ENV in the call to this, so we disable critic warning
+    ## no critic qw(Variables::RequireLocalizedPunctuationVars)
     my $ifconfig = $self->ifconfig;
     $ENV{'PATH'} = dirname $ifconfig;
 
