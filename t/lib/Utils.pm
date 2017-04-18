@@ -18,6 +18,7 @@ sub mock_win32_hostip {
     my $file = shift;
 
     {
+        ## no critic qw(TestingAndDebugging::ProhibitNoWarnings)
         no warnings qw/redefine once/;
         *Sys::HostIP::_run_ipconfig = sub {
             ok( 1, 'Windows was called' );
