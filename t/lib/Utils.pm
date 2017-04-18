@@ -42,6 +42,7 @@ sub mock_run_ipconfig {
     return @output;
 }
 
+## no critic qw(Subroutines::RequireFinalReturn)
 sub base_tests {
     my $hostip = shift;
 
