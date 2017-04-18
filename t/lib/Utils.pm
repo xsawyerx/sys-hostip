@@ -58,7 +58,7 @@ sub base_tests {
     my $sub_ips   = ips();
     my $class_ips = $hostip->ips;
     isa_ok( $class_ips, 'ARRAY', 'scalar context ips() gets arrayref' );
-    my $ip_in_ips_list = 1 == grep {/^$class_ip$/} @{$class_ips};
+    my $ip_in_ips_list = 1 == grep {/^$class_ip$/x} @{$class_ips};
     ok( $ip_in_ips_list, 'Found IP in IPs by class' );
     is( scalar @{$class_ips}, scalar @{$sub_ips},
         'Length of class and sub ips() output is equal' );

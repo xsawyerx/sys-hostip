@@ -202,15 +202,15 @@ sub _get_unix_interface_info {
         # letters followed (possibly) by an number and a colon, then we've got an
         # interface. if the line starts with a space, then it's the info from the
         # interface that we just found, and we stick the contents into %if_info
-        if ( ( $line =~ /^\s+/ ) && ($interface) ) {
+        if ( ( $line =~ /^\s+/x ) && ($interface) ) {
             $if_info{$interface} .= $line;
         }
 
         # FIXME: refactor this regex
         elsif ( ($interface)
-            = ( $line =~ /(^\w+(?:\d)?(?:\.\d+)?(?:\:\d+)?)/ ) )
+            = ( $line =~ /(^\w+(?:\d)?(?:\.\d+)?(?:\:\d+)?)/x ) )
         {
-            $line =~ s/\w+\d(\:)?\s+//;
+            $line =~ s/\w+\d(\:)?\s+//x;
             $if_info{$interface} = $line;
         }
     }
@@ -221,7 +221,7 @@ sub _get_unix_interface_info {
         # output. we just want the ip address. perhaps a future version can
         # return even more useful results (netmask, etc).....
         if ( my ($ip)
-            = ( $if_info{$key} =~ /inet (?:addr\:)?(\d+(?:\.\d+){3})/ ) )
+            = ( $if_info{$key} =~ /inet\s(?:addr\:)?(\d+(?:\.\d+){3})/x ) )
         {
             $if_info{$key} = $ip;
         } else {
