@@ -8,10 +8,9 @@ use warnings;
 use Carp;
 use Exporter;
 use File::Basename 'dirname';
-use vars qw( @ISA @EXPORT_OK );
+use parent 'Exporter';
 
-@ISA       = qw(Exporter);
-@EXPORT_OK = qw( ip ips interfaces ifconfig );
+our @EXPORT_OK = qw( ip ips interfaces ifconfig );
 
 our $IS_WIN = $^O =~ qr/(MSWin32|cygwin)/xms; ## no critic qw(Variables::ProhibitPunctuationVars)
 
