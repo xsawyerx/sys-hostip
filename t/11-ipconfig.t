@@ -7,6 +7,7 @@ use Test::More tests => 4 * 10;
 
 use File::Spec;
 use Sys::HostIP;
+use lib '.';
 use t::lib::Utils qw/mock_win32_hostip/;
 
 sub test_mock_ipconfig {
