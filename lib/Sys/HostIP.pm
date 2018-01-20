@@ -398,7 +398,8 @@ All of these subroutines will match the object oriented interface methods.
 
 Originally written by Jonathan Schatz <bluelines@divisionbyzero.com>.
 
-Currently maintained by Sawyer X <xsawyerx@cpan.org>.
+Currently maintained by Paul Cochrane <paul@liekut.de> and Sawyer X
+<xsawyerx@cpan.org>.
 
 =head1 TODO
 
