@@ -2,6 +2,10 @@ Revision history for Perl extension Sys::HostIP.
 
 {{$NEXT}}
 
+    * Work around ip() failures on non-English systems.
+      (Paul Cochrane)
+    * Better diagnostics in case of failure. (Paul Cochrane)
+
 2.000     2017-03-27 14:20:12+02:00 Europe/Amsterdam
 
     * Fix Windows 7 Finish, Italian, French, German.
