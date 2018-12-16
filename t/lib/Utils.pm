@@ -12,7 +12,7 @@ use Sys::HostIP qw/ip ips ifconfig interfaces/;
 use Test::More;
 
 @ISA       = qw(Exporter);
-@EXPORT_OK = qw( mock_run_ipconfig mock_win32_hostip base_tests );
+@EXPORT_OK = qw( mock_run_ipconfig mock_win32_hostip mock_linux_hostip base_tests );
 
 sub mock_win32_hostip {
     my $file = shift;
@@ -22,6 +22,22 @@ sub mock_win32_hostip {
         no warnings qw/redefine once/;
         *Sys::HostIP::_run_ipconfig = sub {
             ok( 1, 'Windows was called' );
+            return mock_run_ipconfig($file);
+        };
+    }
+
+    my $hostip = Sys::HostIP->new;
+
+    return $hostip;
+}
+
+sub mock_linux_hostip {
+    my $file = shift;
+
+    {
+        ## no critic qw(TestingAndDebugging::ProhibitNoWarnings)
+        no warnings qw/redefine once/;
+        *Sys::HostIP::_run_ipconfig = sub {
             return mock_run_ipconfig($file);
         };
     }
