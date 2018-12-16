@@ -14,8 +14,8 @@ perl:
 
 install:
     - sudo apt-get install net-tools
-    - dzil authordeps --missing | cpanm  --no-skip-satisfied || { cat ~/.cpanm/build.log ; false ; }
-    - dzil listdeps --author --missing | cpanm --no-skip-satisfied || { cat ~/.cpanm/build.log ; false ; }
+    - dzil authordeps --missing | cpanm --notest --no-skip-satisfied || { cat ~/.cpanm/build.log ; false ; }
+    - dzil listdeps --author --missing | cpanm --notest --no-skip-satisfied || { cat ~/.cpanm/build.log ; false ; }
 
 script:
     - dzil test --author --release
