@@ -2,8 +2,6 @@ Revision history for Perl extension Sys::HostIP.
 
 {{$NEXT}}
 
-2.110     YYYY-MM-DD
-
     * Implement fallback to `ip` on systems which don't have `ifconfig`.
       (Adam Balali)
     * Increase perlcritic compliance.
