@@ -54,7 +54,12 @@ sub ip {
 
     if ($IS_WIN) {
         my @if_keys = sort keys %{$if_info};
-        return ( $if_info->{ $if_keys[0] } );
+        if ( defined $if_keys[0] ) {
+            return ( $if_info->{ $if_keys[0] } );
+        }
+        else {
+            return '';
+        }
     } else {
         my $lo_found;
 
@@ -73,7 +78,7 @@ sub ip {
         # we get here if loopback is the only active device
         $lo_found and return '127.0.0.1';
 
-        return;
+        return '';
     }
 }
 
