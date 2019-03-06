@@ -423,7 +423,7 @@ Italian, and Finnish locales.
 
 Copyright (C) prior to 2010, Jonathan Schatz <bluelines@divisionbyzero.com>.
 
-Copyright (C) 2010-2018, Sawyer X <xsawyerx@cpan.org>.
+Copyright (C) 2010-2019, Sawyer X <xsawyerx@cpan.org>.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
