@@ -31,13 +31,13 @@ sub test_mock_ipconfig {
 test_mock_ipconfig(
     'ipconfig-2k.txt',
     { 'Local Area Connection' => '169.254.109.232' },
-    'Correct Win2K interface',
+    'Correct Windows 2000 interface',
 );
 
 test_mock_ipconfig(
     'ipconfig-xp.txt',
     { 'Local Area Connection' => '0.0.0.0' },
-    'Correct WinXP interface',
+    'Correct Windows XP interface',
 );
 
 test_mock_ipconfig(
@@ -46,7 +46,7 @@ test_mock_ipconfig(
         'Local Area Connection'   => '192.168.0.10',
         'Local Area Connection 2' => '192.168.1.20',
     },
-    'Correct Win7 interface',
+    'Correct Windows 7 interface',
 );
 
 test_mock_ipconfig(
@@ -54,7 +54,7 @@ test_mock_ipconfig(
     {
         '' => '192.168.1.101',
     },
-    'Win7 interface, empty name',
+    'Windows 7 interface, empty name',
     );
 
 test_mock_ipconfig(
@@ -62,7 +62,7 @@ test_mock_ipconfig(
     {
         'Ethernet' => '192.168.1.100',
     },
-    'Correct Win10 interface',
+    'Correct Windows 10 interface',
     );
 
 test_mock_ipconfig(
