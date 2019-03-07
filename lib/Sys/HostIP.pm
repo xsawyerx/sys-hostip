@@ -266,7 +266,11 @@ sub _get_win32_interface_info {
 
         adapter => qr/
             ^
-            (?:Ethernet(?:\s?|-)\w+|\w+\s+Ethernet)
+            (?:
+                Ethernet(?:\s?|-)\w+
+                |
+                .*?\s+Ethernet
+            )
             \s+
             (.*) :
         /x,

@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 4 * 10;
+use Test::More tests => 4 * 11;
 
 use File::Spec;
 use Sys::HostIP;
@@ -106,4 +106,12 @@ test_mock_ipconfig(
         'VirtualBox Host-Only Network' => '192.168.56.1',
     },
     'Correct Windows 7 interface in Finnish locale',
+    );
+
+test_mock_ipconfig(
+    'ipconfig-winxp-ru-utf8.txt',
+    {
+        'адаптер' => '10.0.2.15',
+    },
+    'Correct Windows XP interface in Russian locale',
     );

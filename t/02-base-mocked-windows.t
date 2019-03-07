@@ -17,6 +17,7 @@ my @ipconfigs = qw(
   ipconfig-win7-it_IT.txt
   ipconfig-win7.txt
   ipconfig-xp.txt
+  ipconfig-winxp-ru-utf8.txt
 );
 
 
