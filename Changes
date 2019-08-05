@@ -3,6 +3,7 @@ Revision history for Perl extension Sys::HostIP.
 {{$NEXT}}
 
     * Fix test failures on systems with a Russian locale.
+    * Warn users if the interface can't be detected.
 
 2.110     2019-02-23 17:40:31+02:00 Asia/Jerusalem
 
