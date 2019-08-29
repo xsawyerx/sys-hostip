@@ -1,0 +1,29 @@
+
+Windows-IP-Konfiguration
+
+
+Drahtlos-LAN-Adapter LAN-Verbindung* 2:
+
+   Medienstatus. . . . . . . . . . . : Medium getrennt
+   Verbindungsspezifisches DNS-Suffix:
+
+Drahtlos-LAN-Adapter LAN-Verbindung* 4:
+
+   Verbindungsspezifisches DNS-Suffix:
+   Verbindungslokale IPv6-Adresse  . : fe80::a903:dfda:b77:157c%10
+   IPv4-Adresse  . . . . . . . . . . : 192.168.137.1
+   Subnetzmaske  . . . . . . . . . . : 255.255.255.0
+   Standardgateway . . . . . . . . . :
+
+Drahtlos-LAN-Adapter WiFi:
+
+   Verbindungsspezifisches DNS-Suffix: maischein.home
+   Verbindungslokale IPv6-Adresse  . : fe80::e046:4b83:57e8:7ea4%21
+   IPv4-Adresse  . . . . . . . . . . : 192.168.1.84
+   Subnetzmaske  . . . . . . . . . . : 255.255.255.0
+   Standardgateway . . . . . . . . . : 192.168.1.105
+
+Ethernet-Adapter Bluetooth-Netzwerkverbindung 2:
+
+   Medienstatus. . . . . . . . . . . : Medium getrennt
+   Verbindungsspezifisches DNS-Suffix:
