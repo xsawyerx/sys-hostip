@@ -19,6 +19,7 @@ my @ipconfigs = qw(
   ipconfig-win7.txt
   ipconfig-xp.txt
   ipconfig-winxp-ru-utf8.txt
+  ipconfig-win10-de-wifi.txt
 );
 
 

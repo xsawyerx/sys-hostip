@@ -275,6 +275,8 @@ sub _get_win32_interface_info {
             (?:
                 Ethernet(?:\s?|-)\w+
                 |
+                Drahtlos-LAN-Adapter\b
+                |
                 .*?\s+Ethernet
             )
             \s+
